@@ -12,12 +12,44 @@ class Row {
     this.x = x;
     this.y = y;
   }
-  draw(context){
-    context.beginPath();
-    const text = `${this.teamName}`
-    context.fillText(text, this.positionX, this.positionY);
-    context.moveTo(this.positionX, this.positionY);
-    context.strokeRect(this.positionX, this.positionY, this.scoreboard.rowWidth, this.scoreboard.rowHeight);
+  draw(){
+    const c = this.scoreboard.context
+    const w = this.scoreboard.rowWidth
+    const h = this.scoreboard.rowHeight
+    const n = this.scoreboard.qtdProblems
+    // Sizes: Position, Name, Score. 
+    const size = [0.04, 0.3, 0.05]
+    // full row
+    c.beginPath();
+    c.strokeRect(this.x, this.y, w, -h);
+    // Position box
+    const positionX = this.x
+    c.strokeRect(positionX, this.y, size[0] * w, -h)
+    c.fillText(this.position, positionX, this.y, size[0] * w)
+    // Name box
+    const nameX = this.x + size[0] * w
+    c.strokeRect(nameX, this.y, size[1] * w, -h);
+    c.fillText(this.teamName, nameX, this.y, size[1] * w);
+    // Score with penality box
+    const scoreX = nameX + size[1] * w
+    const text = `${this.score}\n${this.penality}`
+    c.strokeRect(scoreX, this.y, size[2] * w, -h);
+    c.fillText(text, scoreX, this.y, size[2] * w);
+    // Questions Box ############# To do: Add array positions
+    var problemX = scoreX + size[2] * w
+    const sum = size.reduce((a,b) => a+b)
+    const problemWidth = w * (1 - sum)/(n)
+    var i = 1;
+    do {
+      const text = `${this.acs}\n${this.submissions}`
+      c.strokeRect(problemX, this.y, problemWidth, -h)
+      c.fillText(text, problemX, this.y, problemWidth)
+      problemX += problemWidth
+      i++;
+    }while(i < n)
+    const text = `${this.acs}\n${this.submissions}`
+    c.strokeRect(problemX, this.y, problemWidth, -h)
+    c.fillText(text, problemX, this.y, problemWidth)
   }
   update(problemNum, ok, time){
     if(this.acs[problemNum] == 0) {
