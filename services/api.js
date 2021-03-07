@@ -7,10 +7,10 @@ export const getContest = (url) => {
     .then(text => { 
       text = text.split('\n')
       const [eventTitle, eventInfo, values] = text
-      const [qtdTeams, qtdQuestions] = values.split(FILE_SEPARATOR)
+      const [qtdTeams, qtdProblems] = values.split(FILE_SEPARATOR)
       text = text.slice(3)
       const teams = text.slice(0,qtdTeams)
-      return {eventTitle, eventInfo, values, qtdTeams, qtdQuestions, teams}
+      return {eventTitle, eventInfo, values, qtdTeams, qtdProblems, teams}
     })
     .then(resolve)
     .catch(reject)
