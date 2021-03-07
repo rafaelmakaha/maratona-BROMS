@@ -10,12 +10,12 @@ const FILE_SEPARATOR = String.fromCharCode(28);
 const main = async () => {
   const rawData = await getContest('./sample/contest')
   // Instatiate Scoreboard
-  const scoreboard = new Scoreboard(canvas, 13)
+  const scoreboard = new Scoreboard(canvas, rawData.qtdProblems)
 
   // Instatiate teams
   rawData.teams.map((team, index) => {
-    let [ref, college, teamName] = team.split(FILE_SEPARATOR)
-    scoreboard.addRow(ref, college, teamName)
+    let teamInfo = team.split(FILE_SEPARATOR)
+    scoreboard.addRow(teamInfo)
   })
   scoreboard.draw()
   // const c = canvas.getContext('2d')

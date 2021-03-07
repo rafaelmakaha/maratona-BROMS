@@ -1,5 +1,5 @@
 class Row {
-  constructor(scoreboard, position, uid, college, teamName, x, y, totalProblems) {
+  constructor(scoreboard, position, [uid, college, teamName], x, y) {
     this.scoreboard = scoreboard;
     this.position = position;
     this.uid = uid;
@@ -7,10 +7,10 @@ class Row {
     this.teamName = teamName;
     this.score = 0;
     this.penality = 0;
-    this.acs = new Array(totalProblems+1).fill(0);
-    this.submissions = new Array(totalProblems+1).fill(0);
-    this.positionX = x;
-    this.positionY = y;
+    this.acs = new Array(this.scoreboard.qtdProblems+1).fill(0);
+    this.submissions = new Array(this.scoreboard.qtdProblems+1).fill(0);
+    this.x = x;
+    this.y = y;
   }
   draw(context){
     context.beginPath();
