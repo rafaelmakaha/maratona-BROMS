@@ -23,33 +23,30 @@ class Row {
     c.beginPath();
     c.strokeRect(this.x, this.y, w, -h);
     // Position box
-    const positionX = this.x
-    c.strokeRect(positionX, this.y, size[0] * w, -h)
-    c.fillText(this.position, positionX, this.y, size[0] * w)
+    let x = this.x
+    c.strokeRect(x, this.y, size[0] * w, -h)
+    c.fillText(this.position, x, this.y, size[0] * w)
     // Name box
-    const nameX = this.x + size[0] * w
-    c.strokeRect(nameX, this.y, size[1] * w, -h);
-    c.fillText(this.teamName, nameX, this.y, size[1] * w);
+    x = this.x + size[0] * w
+    c.strokeRect(x, this.y, size[1] * w, -h);
+    c.fillText(this.teamName, x, this.y, size[1] * w);
     // Score with penality box
-    const scoreX = nameX + size[1] * w
+    x += size[1] * w
     let text = `${this.score}\n${this.penality}`
-    c.strokeRect(scoreX, this.y, size[2] * w, -h);
-    c.fillText(text, scoreX, this.y, size[2] * w);
+    c.strokeRect(x, this.y, size[2] * w, -h);
+    c.fillText(text, x, this.y, size[2] * w);
     // Questions Box ############# To do: Add array positions
-    var problemX = scoreX + size[2] * w
+    x += size[2] * w
     const sum = size.reduce((a,b) => a+b)
     const problemWidth = w * (1 - sum)/(n)
     var i = 1;
     do {
       const text = `${this.acs}\n${this.submissions}`
-      c.strokeRect(problemX, this.y, problemWidth, -h)
-      c.fillText(text, problemX, this.y, problemWidth)
-      problemX += problemWidth
+      c.strokeRect(x, this.y, problemWidth, -h)
+      c.fillText(text, x, this.y, problemWidth)
+      x += problemWidth
       i++;
-    }while(i < n)
-    text = `${this.acs}\n${this.submissions}`
-    c.strokeRect(problemX, this.y, problemWidth, -h)
-    c.fillText(text, problemX, this.y, problemWidth)
+    }while(i <= n)
   }
   update(problemNum, ok, time){
     if(this.acs[problemNum] == 0) {
