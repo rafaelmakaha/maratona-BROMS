@@ -32,7 +32,7 @@ class Row {
     c.fillText(this.teamName, nameX, this.y, size[1] * w);
     // Score with penality box
     const scoreX = nameX + size[1] * w
-    const text = `${this.score}\n${this.penality}`
+    let text = `${this.score}\n${this.penality}`
     c.strokeRect(scoreX, this.y, size[2] * w, -h);
     c.fillText(text, scoreX, this.y, size[2] * w);
     // Questions Box ############# To do: Add array positions
@@ -47,7 +47,7 @@ class Row {
       problemX += problemWidth
       i++;
     }while(i < n)
-    const text = `${this.acs}\n${this.submissions}`
+    text = `${this.acs}\n${this.submissions}`
     c.strokeRect(problemX, this.y, problemWidth, -h)
     c.fillText(text, problemX, this.y, problemWidth)
   }
