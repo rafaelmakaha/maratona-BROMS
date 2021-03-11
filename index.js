@@ -9,11 +9,17 @@ const FILE_SEPARATOR = String.fromCharCode(28);
 
 const main = async () => {
   const rawData = await getContest('./sample/contest')
+  const {
+    eventTitle,
+    eventInfo,
+    qtdProblems,
+    teams
+  } = rawData
   // Instatiate Scoreboard
-  const scoreboard = new Scoreboard(canvas, rawData.qtdProblems)
+  const scoreboard = new Scoreboard(canvas, eventTitle, eventInfo, qtdProblems)
 
   // Instatiate teams
-  rawData.teams.map((team, index) => {
+  teams.map((team, index) => {
     let teamInfo = team.split(FILE_SEPARATOR)
     scoreboard.addRow(teamInfo)
   })

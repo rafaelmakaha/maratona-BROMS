@@ -1,9 +1,14 @@
 import Row from './Row.js'
 
 class Scoreboard {
-  constructor(canvas, qtdProblems, font="30px Roboto" ) {
+  constructor(canvas, eventTitle, {duration, frozen, blind, penality}, qtdProblems, font="30px Roboto" ) {
     this.rows = new Array(1)
     this.context = canvas.getContext('2d');
+    this.eventTitle = eventTitle;
+    this.duration = duration;
+    this.frozen = frozen;
+    this.blind = blind;
+    this.penality = penality;
     this.qtdProblems = qtdProblems;
     this.totalRows = 0;
     this.rowHeight = 40;
@@ -37,7 +42,7 @@ class Scoreboard {
     c.strokeRect(x, this.y, (w -x + this.x), -h);
     // Teams
     c.fillStyle = "green"
-    text = "Teams"
+    text = this.eventTitle
     c.fillText(text, x, this.y, size[1] * w)
     c.strokeRect(x, this.y, size[1] * w, -h);
     // Score
