@@ -10,21 +10,53 @@ class Scoreboard {
     this.rowWidth = 0.95 * canvas.width;
     this.font = font;
     this.x = 20;
-    this.y = 20;
+    this.y = 50;
   }
   header() {
     this.rows.push(new Row(this, ))
   }
   draw() {
     const c = this.context
-    c.fillStyle = 'red';
-    c.textAlign = "left";
     c.font = this.font;
-    // Desenhar o header
     this.drawHeader()
+    c.fillStyle = 'blue';
+    c.textAlign = "left";
+    // Desenhar o header
     this.rows.slice(1,this.totalRows+1).map((row) => row.draw()) 
   }
   drawHeader() {
+    const c = this.context
+    const w = this.rowWidth
+    const h = this.rowHeight
+    const n = this.qtdProblems
+    const size = [0.04, 0.3, 0.05]
+    let text = '';
+    // Full box
+    let x = this.x + this.rowWidth * size[0]
+    c.beginPath();
+    c.strokeRect(x, this.y, (w -x + this.x), -h);
+    // Teams
+    c.fillStyle = "green"
+    text = "Teams"
+    c.fillText(text, x, this.y, size[1] * w)
+    c.strokeRect(x, this.y, size[1] * w, -h);
+    // Score
+    x += size[1] * w
+    text = "Score"
+    c.fillText(text, x, this.y, size[2] * w)
+    c.strokeRect(x, this.y, size[2] * w, -h)
+    // Questions
+    x += size[2] * w
+    const sum = size.reduce((a,b) => a+b)
+    const problemWidth = w * (1 - sum)/(n)
+    var i = 1;
+    do {
+      text = String.fromCharCode(64+i)
+      c.fillText(text, x, this.y, problemWidth)
+      c.strokeRect(x, this.y, problemWidth, -h)
+      x += problemWidth
+      i++
+    }while(i <= n)
   }
   addRow(teamInfo){
     this.totalRows++;
