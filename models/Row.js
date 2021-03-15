@@ -12,29 +12,40 @@ class Row {
     this.x = x;
     this.y = y;
   }
-  draw(){
+  draw(camera){
     const c = this.scoreboard.context
     const w = this.scoreboard.rowWidth
     const h = this.scoreboard.rowHeight
     const n = this.scoreboard.qtdProblems
+
+
+    const a = Math.max(camera.y, this.y)
+    const b = Math.min(camera.y + camera.h, this.y + h)
+
+    if (b - a <= 0) return 
+
+    let x = this.x - camera.x
+    let y = this.y - camera.y
+    
+
+
     // Sizes: Position, Name, Score. 
     const size = [0.04, 0.3, 0.05]
     // full row
     c.beginPath();
-    c.strokeRect(this.x, this.y, w, -h);
+    c.strokeRect(x, y, w, -h);
     // Position box
-    let x = this.x
-    c.strokeRect(x, this.y, size[0] * w, -h)
-    c.fillText(this.position, x, this.y, size[0] * w)
+    c.strokeRect(x, y, size[0] * w, -h)
+    c.fillText(this.position, x, y, size[0] * w)
     // Name box
-    x = this.x + size[0] * w
-    c.strokeRect(x, this.y, size[1] * w, -h);
-    c.fillText(this.teamName, x, this.y, size[1] * w);
+    x = x + size[0] * w
+    c.strokeRect(x, y, size[1] * w, -h);
+    c.fillText(this.teamName, x, y, size[1] * w);
     // Score with penality box
     x += size[1] * w
     let text = `${this.score}\n${this.penality}`
-    c.strokeRect(x, this.y, size[2] * w, -h);
-    c.fillText(text, x, this.y, size[2] * w);
+    c.strokeRect(x, y, size[2] * w, -h);
+    c.fillText(text, x, y, size[2] * w);
     // Questions Box ############# To do: Add array positions
     x += size[2] * w
     const sum = size.reduce((a,b) => a+b)
@@ -42,8 +53,8 @@ class Row {
     var i = 1;
     do {
       const text = `${this.acs}\n${this.submissions}`
-      c.strokeRect(x, this.y, problemWidth, -h)
-      c.fillText(text, x, this.y, problemWidth)
+      c.strokeRect(x, y, problemWidth, -h)
+      c.fillText(text, x, y, problemWidth)
       x += problemWidth
       i++;
     }while(i <= n)
