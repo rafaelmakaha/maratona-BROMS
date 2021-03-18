@@ -8,7 +8,7 @@ canvas.height = window.innerHeight - 5;
 
 const FILE_SEPARATOR = String.fromCharCode(28);
 
-const camera = new Camera(0, 600)
+const camera = new Camera(0, 0)
 
 let scoreboard = Scoreboard
 
@@ -33,25 +33,37 @@ const main = async () => {
   scoreboard.draw()
 }
 
-window.addEventListener('wheel', (event) => {
-  if (event.deltaY < 0) camera.move(0, camera.y - 20)
-  else if (event.deltaY > 0) camera.move(0, camera.y + 20)
+const redrawAll = () => {
   canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
   scoreboard.draw()
+}
+
+window.addEventListener('wheel', (event) => {
+  if (event.deltaY < 0) {
+    camera.move(0, camera.y - 20)
+    redrawAll()
+  }
+  else if (event.deltaY > 0) {
+    camera.move(0, camera.y + 20)
+    redrawAll()
+  }
+}, {passive: true})
+
+window.addEventListener('keydown', (event) => {
+  console.log(camera.y)
+  if (event.code === "ArrowUp") {
+    camera.move(0, camera.y - 40)
+    redrawAll()
+  }else if (event.code === "ArrowDown") {
+    camera.move(0, camera.y + 40)
+    redrawAll()
+  }
 }, {passive: true})
 
 window.addEventListener('resize', () => {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
   main()
-}, {passive: true})
-
-window.addEventListener('keydown', (event) => {
-  if (event.code === "ArrowUp")        camera.move(0, camera.y - 40)
-  else if (event.code === "ArrowDown") camera.move(0, camera.y + 40)
-  else if (event.code === 'Escape') done = true
-  canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
-  scoreboard.draw()
 }, {passive: true})
 
 main()
