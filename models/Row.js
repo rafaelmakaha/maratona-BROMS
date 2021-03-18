@@ -51,13 +51,13 @@ class Row {
     const sum = size.reduce((a,b) => a+b)
     const problemWidth = w * (1 - sum)/(n)
     var i = 1;
-    do {
+    while(i <= n) {
       const text = `${this.acs}\n${this.submissions}`
       c.strokeRect(x, y, problemWidth, -h)
       c.fillText(text, x, y, problemWidth)
       x += problemWidth
       i++;
-    }while(i <= n)
+    }
   }
   update(problemNum, ok, time){
     if(this.acs[problemNum] == 0) {

@@ -50,9 +50,9 @@ class Scoreboard {
     const size = [0.04, 0.3, 0.05]
     let text = '';
     // Full box
-    x = x + this.rowWidth * size[0]
+    x = x + w * size[0]
     c.beginPath();
-    c.strokeRect(x, y, (w -x + x), -h);
+    c.strokeRect(x, y, (w - w*size[0]), -h);
     // Teams
     c.fillStyle = "green"
     text = this.eventTitle
@@ -68,13 +68,13 @@ class Scoreboard {
     const sum = size.reduce((a,b) => a+b)
     const problemWidth = w * (1 - sum)/(n)
     var i = 1;
-    do {
+    while(i <= n) {
       text = String.fromCharCode(64+i)
       c.fillText(text, x, y, problemWidth)
       c.strokeRect(x, y, problemWidth, -h)
       x += problemWidth
       i++
-    }while(i <= n)
+    }
   }
   addRow(teamInfo){
     this.totalRows++;
