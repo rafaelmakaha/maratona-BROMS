@@ -3,8 +3,8 @@ import Camera from './models/camera.js';
 import { getContest } from './services/api.js'
 
 const canvas = document.getElementById("canvas")
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+canvas.width = window.innerWidth - 5;
+canvas.height = window.innerHeight - 5;
 
 const FILE_SEPARATOR = String.fromCharCode(28);
 
@@ -33,11 +33,18 @@ const main = async () => {
   scoreboard.draw()
 }
 
+window.addEventListener('wheel', (event) => {
+  if (event.deltaY < 0) camera.move(0, camera.y - 20)
+  else if (event.deltaY > 0) camera.move(0, camera.y + 20)
+  canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
+  scoreboard.draw()
+}, {passive: true})
+
 window.addEventListener('resize', () => {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
   main()
-})  
+}, {passive: true})
 
 window.addEventListener('keydown', (event) => {
   if (event.code === "ArrowUp")        camera.move(0, camera.y - 40)
@@ -45,6 +52,6 @@ window.addEventListener('keydown', (event) => {
   else if (event.code === 'Escape') done = true
   canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
   scoreboard.draw()
-})
+}, {passive: true})
 
 main()
