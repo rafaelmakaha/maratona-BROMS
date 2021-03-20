@@ -1,8 +1,7 @@
 import Scoreboard from './models/Scoreboard.js';
-import Camera from './models/camera.js';
+import Camera from './models/Camera.js';
 import { getContest } from './services/api.js'
 import loadFont from './utils/loadFont.js'
-import {alignCenter} from './utils/align.js'
 
 const canvas = document.getElementById("canvas")
 canvas.width = window.innerWidth - 5;
@@ -84,7 +83,7 @@ window.addEventListener('keydown', (event) => {
 window.addEventListener('resize', () => {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
-  main()
+  redrawAll()
 }, {passive: true})
 
 main()

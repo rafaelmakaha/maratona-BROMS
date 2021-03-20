@@ -24,6 +24,7 @@ class Scoreboard {
   }
   draw() {
     const c = this.canvas.getContext('2d');
+    this.rowWidth = 0.95 * this.canvas.width;
     c.font = this.font;
     this.drawHeader()
     c.fillStyle = 'blue';
