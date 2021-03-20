@@ -1,3 +1,5 @@
+import {alignCenter} from '../utils/align.js'
+
 class Row {
   constructor(scoreboard, position, [uid, college, teamName], x, y) {
     this.scoreboard = scoreboard;
@@ -30,13 +32,18 @@ class Row {
 
 
     // Sizes: Position, Name, Score. 
-    const size = [0.04, 0.3, 0.05]
+    const size = [0.07, 0.3, 0.05]
     // full row
     c.beginPath();
     c.strokeRect(x, y, w, -h);
     // Position box
-    c.strokeRect(x, y, size[0] * w, -h)
-    c.fillText(this.position, x, y, size[0] * w)
+    let [dx, dy] = alignCenter(this.position, size[0] * w, h)
+    console.log(this.position, size[0] * w, h)
+    console.log(x,y)
+    console.log(dx,dy)
+    // c.strokeRect(400, 400, dx, dy)
+    console.log('size * w', size[0] * w)
+    c.fillText(this.position, x + dx, y -dy)
     // Name box
     x = x + size[0] * w
     c.strokeRect(x, y, size[1] * w, -h);

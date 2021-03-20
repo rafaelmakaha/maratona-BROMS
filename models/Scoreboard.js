@@ -1,7 +1,7 @@
 import Row from './Row.js'
 
 class Scoreboard {
-  constructor(canvas, camera, eventTitle, {duration, frozen, blind, penality}, qtdProblems, font="30px Roboto" ) {
+  constructor(canvas, camera, eventTitle, {duration, frozen, blind, penality}, qtdProblems, font="30px MonospaceTypewriter" ) {
     this.camera = camera;
     this.rows = new Array(1)
     this.canvas = canvas;
@@ -23,7 +23,7 @@ class Scoreboard {
     this.rows.push(new Row(this, ))
   }
   draw() {
-    const c = this.context
+    const c = this.canvas.getContext('2d');
     c.font = this.font;
     this.drawHeader()
     c.fillStyle = 'blue';

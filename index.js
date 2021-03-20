@@ -1,16 +1,37 @@
 import Scoreboard from './models/Scoreboard.js';
 import Camera from './models/camera.js';
 import { getContest } from './services/api.js'
+import loadFont from './utils/loadFont.js'
+import {alignCenter} from './utils/align.js'
 
 const canvas = document.getElementById("canvas")
 canvas.width = window.innerWidth - 5;
 canvas.height = window.innerHeight - 5;
+loadFont("MonospaceTypewriter")
 
 const FILE_SEPARATOR = String.fromCharCode(28);
 
 const camera = new Camera(0, 0)
 
-let scoreboard = Scoreboard
+let Singleton = (function () {
+  var instance;
+
+  function createInstance(canvas, camera, eventTitle, eventInfo, qtdProblems) {
+      var object = new Scoreboard(canvas, camera, eventTitle, eventInfo, qtdProblems);
+      return object;
+  }
+
+  return {
+      getInstance: function (canvas, camera, eventTitle, eventInfo, qtdProblems) {
+          if (!instance) {
+              instance = createInstance(canvas, camera, eventTitle, eventInfo, qtdProblems);
+          }
+          return instance;
+      }
+  };
+})();
+
+let scoreboard;
 
 const main = async () => {
   const rawData = await getContest('./sample/contest')
@@ -20,9 +41,9 @@ const main = async () => {
     qtdProblems,
     teams
   } = rawData
-  // canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
+
   // Instatiate Scoreboard
-  scoreboard = new Scoreboard(canvas, camera, eventTitle, eventInfo, qtdProblems)
+  scoreboard = Singleton.getInstance(canvas, camera, eventTitle, eventInfo, qtdProblems)
 
   // Instatiate teams
   teams.map((team, index) => {
