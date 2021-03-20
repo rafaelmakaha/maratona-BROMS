@@ -1,8 +1,9 @@
 import Row from './Row.js'
+import cameraSingleton from './Camera.js'
 
 class Scoreboard {
-  constructor(canvas, camera, eventTitle, {duration, frozen, blind, penality}, qtdProblems, font="30px MonospaceTypewriter" ) {
-    this.camera = camera;
+  constructor(canvas, eventTitle, {duration, frozen, blind, penality}, qtdProblems, font="30px MonospaceTypewriter" ) {
+    this.camera = cameraSingleton.getInstance();
     this.rows = new Array(1)
     this.canvas = canvas;
     this.context = canvas.getContext('2d');
@@ -30,7 +31,7 @@ class Scoreboard {
     c.fillStyle = 'blue';
     c.textAlign = "left";
     // Desenhar o header
-    this.rows.slice(1,this.totalRows+1).map((row) => row.draw(this.camera)) 
+    this.rows.slice(1,this.totalRows+1).map((row) => row.draw()) 
   }
   drawHeader() {
     const c = this.context

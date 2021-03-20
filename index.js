@@ -1,5 +1,5 @@
 import Scoreboard from './models/Scoreboard.js';
-import Camera from './models/Camera.js';
+import cameraSingleton from './models/Camera.js';
 import { getContest } from './services/api.js'
 import loadFont from './utils/loadFont.js'
 
@@ -10,26 +10,7 @@ loadFont("MonospaceTypewriter")
 
 const FILE_SEPARATOR = String.fromCharCode(28);
 
-const camera = new Camera(0, 0)
-
-let Singleton = (function () {
-  var instance;
-
-  function createInstance(canvas, camera, eventTitle, eventInfo, qtdProblems) {
-      var object = new Scoreboard(canvas, camera, eventTitle, eventInfo, qtdProblems);
-      return object;
-  }
-
-  return {
-      getInstance: function (canvas, camera, eventTitle, eventInfo, qtdProblems) {
-          if (!instance) {
-              instance = createInstance(canvas, camera, eventTitle, eventInfo, qtdProblems);
-          }
-          return instance;
-      }
-  };
-})();
-
+const camera = cameraSingleton.getInstance();
 let scoreboard;
 
 const main = async () => {
@@ -42,7 +23,7 @@ const main = async () => {
   } = rawData
 
   // Instatiate Scoreboard
-  scoreboard = Singleton.getInstance(canvas, camera, eventTitle, eventInfo, qtdProblems)
+  scoreboard = new Scoreboard(canvas, eventTitle, eventInfo, qtdProblems)
 
   // Instatiate teams
   teams.map((team, index) => {

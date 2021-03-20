@@ -1,7 +1,9 @@
 import {alignCenter} from '../utils/align.js'
+import cameraSingleton from './Camera.js'
 
 class Row {
   constructor(scoreboard, position, [uid, college, teamName], x, y) {
+    this.camera = cameraSingleton.getInstance();
     this.scoreboard = scoreboard;
     this.position = position;
     this.uid = uid;
@@ -14,20 +16,20 @@ class Row {
     this.x = x;
     this.y = y;
   }
-  draw(camera){
+  draw(){
     const c = this.scoreboard.context
     const w = this.scoreboard.rowWidth
     const h = this.scoreboard.rowHeight
     const n = this.scoreboard.qtdProblems
 
 
-    const a = Math.max(camera.y, this.y)
-    const b = Math.min(camera.y + camera.h, this.y + h)
+    const a = Math.max(this.camera.y, this.y)
+    const b = Math.min(this.camera.y + this.camera.h, this.y + h)
 
     if (b - a <= 0) return 
 
-    let x = this.x - camera.x
-    let y = this.y - camera.y
+    let x = this.x - this.camera.x
+    let y = this.y - this.camera.y
     
 
 
@@ -38,11 +40,11 @@ class Row {
     c.strokeRect(x, y, w, -h);
     // Position box
     let [dx, dy] = alignCenter(this.position, size[0] * w, h)
-    console.log(this.position, size[0] * w, h)
-    console.log(x,y)
-    console.log(dx,dy)
+    // console.log(this.position, size[0] * w, h)
+    // console.log(x,y)
+    // console.log(dx,dy)
     // c.strokeRect(400, 400, dx, dy)
-    console.log('size * w', size[0] * w)
+    // console.log('size * w', size[0] * w)
     c.fillText(this.position, x + dx, y -dy)
     // Name box
     x = x + size[0] * w
