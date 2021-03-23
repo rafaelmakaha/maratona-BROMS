@@ -16,6 +16,10 @@ class Camera {
     update(scoreH){
         this.yMax = Math.max(0, scoreH - this.h)
     }
+    updateSize(w,h){
+        this.w = w;
+        this.h = h;
+    }
 }
 
 let cameraSingleton = (function () {

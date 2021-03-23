@@ -51,7 +51,6 @@ window.addEventListener('wheel', (event) => {
 }, {passive: true})
 
 window.addEventListener('keydown', (event) => {
-  console.log(camera.y)
   if (event.code === "ArrowUp") {
     camera.move(0, camera.y - 40)
     redrawAll()
@@ -64,6 +63,7 @@ window.addEventListener('keydown', (event) => {
 window.addEventListener('resize', () => {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
+  const camera = cameraSingleton.getInstance().updateSize(window.innerWidth, window.innerHeight)
   redrawAll()
 }, {passive: true})
 
