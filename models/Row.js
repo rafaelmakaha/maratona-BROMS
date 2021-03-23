@@ -1,4 +1,4 @@
-import {alignCenter} from '../utils/align.js'
+import {align} from '../utils/align.js'
 import cameraSingleton from './Camera.js'
 
 class Row {
@@ -21,7 +21,7 @@ class Row {
     const w = this.scoreboard.rowWidth
     const h = this.scoreboard.rowHeight
     const n = this.scoreboard.qtdProblems
-
+    let dx, dy, text;
 
     const a = Math.max(this.camera.y, this.y)
     const b = Math.min(this.camera.y + this.camera.h, this.y + h)
@@ -30,40 +30,39 @@ class Row {
 
     let x = this.x - this.camera.x
     let y = this.y - this.camera.y
-    
-
 
     // Sizes: Position, Name, Score. 
-    const size = [0.07, 0.3, 0.05]
+    const size = [0.07, 0.3, 0.05, 0.05]
     // full row
     c.beginPath();
     c.strokeRect(x, y, w, -h);
     // Position box
-    let [dx, dy] = alignCenter(this.position, size[0] * w, h)
-    // console.log(this.position, size[0] * w, h)
-    // console.log(x,y)
-    // console.log(dx,dy)
-    // c.strokeRect(400, 400, dx, dy)
-    // console.log('size * w', size[0] * w)
+    [dx, dy] = align(this.position, 'center', size[0] * w, h)
     c.fillText(this.position, x + dx, y -dy)
     // Name box
-    x = x + size[0] * w
+    x = x + size[0] * w;
     c.strokeRect(x, y, size[1] * w, -h);
-    c.fillText(this.teamName, x, y, size[1] * w);
-    // Score with penality box
-    x += size[1] * w
-    let text = `${this.score}\n${this.penality}`
+    [dx, dy] = align(this.teamName, 'right', size[1] * w, h)
+    c.fillText(this.teamName, x + dx, y -dy, size[1] * w);
+    // Score box
+    x += size[1] * w;
+    [dx, dy] = align(this.score, 'right', size[2] * w, h)
     c.strokeRect(x, y, size[2] * w, -h);
-    c.fillText(text, x, y, size[2] * w);
+    c.fillText(this.score, x + dx, y - dy, size[2] * w);
+    // Penality box
+    x += size[2] * w;
+    [dx, dy] = align(this.penality, 'right', size[3] * w, h)
+    c.strokeRect(x, y, size[3] * w, -h);
+    c.fillText(this.penality, x + dx, y - dy, size[3] * w);
     // Questions Box ############# To do: Add array positions
-    x += size[2] * w
+    x += size[2] * w;
     const sum = size.reduce((a,b) => a+b)
     const problemWidth = w * (1 - sum)/(n)
     var i = 1;
     while(i <= n) {
-      const text = `${this.acs}\n${this.submissions}`
-      c.strokeRect(x, y, problemWidth, -h)
-      c.fillText(text, x, y, problemWidth)
+      c.strokeRect(x, y, problemWidth, -h);
+      [dx, dy] = align(this.acs, 'center', problemWidth, h)
+      c.fillText(this.acs, x + dx, y - dy, problemWidth)
       x += problemWidth
       i++;
     }
