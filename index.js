@@ -4,7 +4,7 @@ import { getContest } from './services/api.js';
 import loadFont from './utils/loadFont.js';
 import canvasSingleton from './models/Canvas.js'
 
-const canvas = canvasSingleton.getInstance()
+let canvas = canvasSingleton.getInstance()
 canvas.width = window.innerWidth - 5;
 canvas.height = window.innerHeight - 5;
 loadFont("MonospaceTypewriter")
@@ -36,6 +36,7 @@ const main = async () => {
 }
 
 const redrawAll = () => {
+  canvas = canvasSingleton.getInstance();
   canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
   scoreboard.draw()
 }
