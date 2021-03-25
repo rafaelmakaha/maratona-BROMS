@@ -1,6 +1,8 @@
-export function align(text, type, width='', height='') {
-  const ctx = document.createElement("canvas").getContext("2d");
-  ctx.font = "30px MonospaceTypewriter"
+import canvasSingleton from '../models/Canvas.js'
+
+export function align(text, type, width='', height='', font=30) {
+  const ctx = canvasSingleton.getInstance().getContext("2d");
+  ctx.font = `${font}px MonospaceTypewriter`;
   const textMetrics = ctx.measureText(text)
   const text_w = textMetrics.width
   const text_h = textMetrics.actualBoundingBoxAscent
@@ -9,6 +11,6 @@ export function align(text, type, width='', height='') {
     left: [0,(height - text_h)/2],
     right: [width - text_w, (height - text_h)/2],
   }
-  console.log(text, ans[type])
+  if (text_w > width) return align(text, type, width, height, font-1)
   return ans[type]
 }

@@ -1,9 +1,10 @@
 import Scoreboard from './models/Scoreboard.js';
 import cameraSingleton from './models/Camera.js';
-import { getContest } from './services/api.js'
-import loadFont from './utils/loadFont.js'
+import { getContest } from './services/api.js';
+import loadFont from './utils/loadFont.js';
+import canvasSingleton from './models/Canvas.js'
 
-const canvas = document.getElementById("canvas")
+const canvas = canvasSingleton.getInstance()
 canvas.width = window.innerWidth - 5;
 canvas.height = window.innerHeight - 5;
 loadFont("MonospaceTypewriter")
@@ -23,7 +24,7 @@ const main = async () => {
   } = rawData
 
   // Instatiate Scoreboard
-  scoreboard = new Scoreboard(canvas, eventTitle, eventInfo, qtdProblems)
+  scoreboard = new Scoreboard(eventTitle, eventInfo, qtdProblems)
 
   // Instatiate teams
   teams.map((team, index) => {

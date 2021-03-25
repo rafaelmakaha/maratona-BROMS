@@ -1,12 +1,13 @@
 import Row from './Row.js'
 import cameraSingleton from './Camera.js'
+import canvasSingleton from './Canvas.js'
 
 class Scoreboard {
-  constructor(canvas, eventTitle, {duration, frozen, blind, penality}, qtdProblems, font="30px MonospaceTypewriter" ) {
+  constructor(eventTitle, {duration, frozen, blind, penality}, qtdProblems, font="30px MonospaceTypewriter" ) {
     this.camera = cameraSingleton.getInstance();
     this.rows = new Array(1)
-    this.canvas = canvas;
-    this.context = canvas.getContext('2d');
+    this.canvas = canvasSingleton.getInstance();
+    this.context = this.canvas.getContext('2d');
     this.eventTitle = eventTitle;
     this.duration = duration;
     this.frozen = frozen;

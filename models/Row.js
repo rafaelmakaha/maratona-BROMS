@@ -43,7 +43,8 @@ class Row {
     x = x + size[0] * w;
     c.strokeRect(x, y, size[1] * w, -h);
     [dx, dy] = align(this.teamName, 'right', size[1] * w, h)
-    c.fillText(this.teamName, x + dx, y -dy, size[1] * w);
+    console.log(this.teamName.length, this.teamName)
+    c.fillText(this.teamName, x + dx, y -dy);
     // Score box
     x += size[1] * w;
     [dx, dy] = align(this.score, 'right', size[2] * w, h)
