@@ -63,8 +63,8 @@ window.addEventListener('keydown', (event) => {
 }, {passive: true})
 
 window.addEventListener('resize', () => {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+  canvas.width = window.innerWidth - 5;
+  canvas.height = window.innerHeight - 5;
   const camera = cameraSingleton.getInstance().updateSize(window.innerWidth, window.innerHeight)
   redrawAll()
 }, {passive: true})
