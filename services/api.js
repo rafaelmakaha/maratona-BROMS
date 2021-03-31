@@ -18,3 +18,24 @@ export const getContest = (url) => {
     .catch(reject)
   })
 }
+
+export const getRuns = (url) => {
+  return new Promise((resolve, reject) => {
+    fetch(url)
+    .then(response => response.text())
+    .then(text => { 
+      text = text.split('\n').slice(0,-1);
+      const runs = text.map((run,i) => {
+        const [runid, time, teamUid, problem, verdict] = run.split(FILE_SEPARATOR);
+        return [parseInt(runid), parseInt(time), teamUid, problem, verdict]
+      })
+      return runs
+    })
+    .then(resolve)
+    .catch(reject)
+  })
+}
+
+function compare(a,b) {
+  return parseInt(a[0]) - parseInt(b[0])
+}

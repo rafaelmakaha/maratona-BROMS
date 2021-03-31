@@ -1,6 +1,6 @@
 import Scoreboard from './models/Scoreboard.js';
 import cameraSingleton from './models/Camera.js';
-import { getContest } from './services/api.js';
+import { getContest, getRuns } from './services/api.js';
 import loadFont from './utils/loadFont.js';
 import canvasSingleton from './models/Canvas.js'
 
@@ -15,7 +15,8 @@ const camera = cameraSingleton.getInstance();
 let scoreboard;
 
 const main = async () => {
-  const rawData = await getContest('./sample/contest')
+  const rawData = await getContest('./sample/contest');
+  const runs = await getRuns('./sample/runs');
   const {
     eventTitle,
     eventInfo,
