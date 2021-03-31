@@ -32,8 +32,18 @@ const main = async () => {
     let teamInfo = team.split(FILE_SEPARATOR)
     scoreboard.addRow(teamInfo)
   })
-  
+
   scoreboard.draw()
+  console.log(runs.length)
+  runs.map((run,i) => {
+    if(run[4].charCodeAt(0) === "Y".charCodeAt(0)){
+      setTimeout(() => {
+        scoreboard.processRun(run)
+        redrawAll()
+      }, 1000*i);
+    }
+
+  })
 }
 
 const redrawAll = () => {

@@ -3,9 +3,10 @@ import cameraSingleton from './Camera.js'
 import canvasSingleton from './Canvas.js'
 
 class Scoreboard {
-  constructor(eventTitle, {duration, frozen, blind, penality}, qtdProblems, font="30px MonospaceTypewriter" ) {
+  constructor(eventTitle, { duration, frozen, blind, penality }, qtdProblems, font = "30px MonospaceTypewriter") {
     this.camera = cameraSingleton.getInstance();
     this.rows = new Array(0);
+    this.rowsUid = {}
     this.eventTitle = eventTitle;
     this.duration = duration;
     this.frozen = frozen;
@@ -28,19 +29,58 @@ class Scoreboard {
     const c = canvasSingleton.getInstance().getContext('2d');
     this.rowWidth = 0.95 * canvas.width;
     c.font = this.font;
-    // this.drawHeader()
-    // console.log(this.rows.slice(this.totalRows))
     c.fillStyle = 'blue';
     c.textAlign = "left";
-    this.rows.map((row) => row.draw()) 
+    this.rows.map((row) => row.draw())
   }
-  addRow(teamInfo){
+  addRow(teamInfo) {
     this.totalRows++;
     this.rows.push(new Row(this, this.totalRows, teamInfo, this.x, this.y + (this.totalRows * this.rowHeight)));
-    this.camera.update((this.totalRows+1) * this.rowHeight);
+    this.rowsUid[teamInfo[0]] = this.rows[this.totalRows]
+    this.camera.update((this.totalRows + 1) * this.rowHeight);
   }
-   // Método para mudança de posicoes
-  notify(position){}
+  notify(position) { }
+  processRun([runid, time, teamUid, problem, verdict]) {
+    const i = this.rowsUid[teamUid].position;
+    const p = problem.charCodeAt(0) - 64;
+    const team = this.rows[i];
+    if (team.acs[p] !== 0) return
+    if (verdict.charCodeAt(0) === "Y".charCodeAt(0)) {
+      team.acs[p] = 1;
+      team.score += 1;
+      team.penality += time + this.penality * team.submissions[p];
+    } else {
+      team.submissions[p] += 1;
+    }
+    this.rows[i] = team;
+    this.rowsUid[teamUid] = team;
+    this.updatePosition(i);
+  }
+  updatePosition(index) {
+    let i = index - 1;
+    while (i != 0) {
+      if (this.rows[i + 1].score > this.rows[i].score ||
+        this.rows[i + 1].score === this.rows[i].score && this.rows[i + 1].penality < this.rows[i].penality) {
+
+        // update position
+        this.rows[i].position++;
+        this.rows[i + 1].position--;
+
+        // update row object
+        const aux = this.rows[i];
+        this.rows[i] = this.rows[i + 1];
+        this.rows[i + 1] = aux;
+
+        // update row coords
+        const auxY = this.rows[i].y
+        this.rows[i].y = this.rows[i + 1].y
+        this.rows[i+1].y = auxY
+      } else {
+        break;
+      }
+      i--;
+    }
+  }
 }
 
 export default Scoreboard;
