@@ -11,14 +11,14 @@ class Row {
     this.position = header ? '' : position;
     this.uid = uid;
     this.college = college;
-    this.teamName = header ? 'Equipe': teamName;
+    this.teamName = header ? 'Team': teamName;
     this.score = header ? 'Score' : 0;
-    this.penality = header ? 'Penality' : 0;
+    this.penality = header ? 'Penalty' : 0;
     this.acs = header ? ' ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').slice(0, this.scoreboard.qtdProblems+1) : new Array(this.scoreboard.qtdProblems+1).fill(0);
     this.submissions = new Array(this.scoreboard.qtdProblems+1).fill(0);
     this.x = x;
     this.y = y;
-    this.size = [0.07, 0.3, 0.05, 0.05]; //Sizes: Position, Name, Score, Penality
+    this.size = [0.05, 0.3, 0.07, 0.09]; //Sizes: Position, Name, Score, Penality
     this.c = this.scoreboard.context;
     this.w = this.scoreboard.rowWidth;
     this.h = this.scoreboard.rowHeight;
@@ -31,17 +31,19 @@ class Row {
   }
   drawName(text, x, y) {
     this.c.strokeRect(x, y, this.size[1] * this.w, -this.h);
-    let [dx, dy] = align(text, 'left', this.size[1] * this.w, this.h);
-    this.c.fillText(text, x + dx, y -dy);  
+    let [dx, dy, offset] = align(text, 'left', this.size[1] * this.w, this.h);
+    this.c.fillText(text, x + dx, y -dy, this.size[1] * this.w - offset);  
   }
   drawScore(text, x, y) {
     this.c.strokeRect(x, y, this.size[2] * this.w, -this.h);
     let [dx, dy] = align(text, 'right', this.size[2] * this.w, this.h);
+    if (this.header) [dx, dy] = align(text, 'center', this.size[2] * this.w, this.h);
     this.c.fillText(text, x + dx, y - dy);
   }
   drawPenality(text, x, y) {
     this.c.strokeRect(x, y, this.size[3] * this.w, -this.h);
-    let [dx, dy] = align(text, 'right', this.size[2] * this.w, this.h);
+    let [dx, dy] = align(text, 'right', this.size[3] * this.w, this.h);
+    if (this.header) [dx, dy] = align(text, 'center', this.size[3] * this.w, this.h);
     this.c.fillText(text, x + dx, y - dy);
   }
   drawQuestions(x, y, w) {
@@ -80,7 +82,7 @@ class Row {
     x += this.size[2] * this.w;
     this.drawPenality(this.penality, x, y)
 
-    x += this.size[2] * this.w;
+    x += this.size[3] * this.w;
     const sum = this.size.reduce((a,b) => a+b)
     const problemWidth = this.w * (1 - sum)/(this.n -1)
     this.drawQuestions(x, y, problemWidth)
