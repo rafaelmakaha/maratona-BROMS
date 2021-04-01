@@ -5,6 +5,7 @@ import canvasSingleton from './Canvas.js';
 class Row {
   constructor(scoreboard, position, [uid, college, teamName], x, y, header=false) {
     this.header = header;
+    this.lastAc = 0;
     this.camera = cameraSingleton.getInstance();
     this.scoreboard = scoreboard;
     this.position = header ? '' : position;

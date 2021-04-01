@@ -48,7 +48,9 @@ class Scoreboard {
     if (verdict.charCodeAt(0) === "Y".charCodeAt(0)) {
       team.acs[p] = 1;
       team.score += 1;
+      team.lastAc = time;
       team.penality += time + this.penality * team.submissions[p];
+      console.log(team.teamName, team.lastAc)
     } else {
       team.submissions[p] += 1;
     }
@@ -60,7 +62,8 @@ class Scoreboard {
     let i = index - 1;
     while (i != 0) {
       if (this.rows[i + 1].score > this.rows[i].score ||
-        this.rows[i + 1].score === this.rows[i].score && this.rows[i + 1].penality < this.rows[i].penality) {
+        this.rows[i + 1].score === this.rows[i].score && this.rows[i + 1].penality < this.rows[i].penality ||
+        this.rows[i + 1].penality === this.rows[i].penality && this.rows[i + 1].lastAc < this.rows[i].lastAc) {
 
         // update position
         this.rows[i].position++;
@@ -74,7 +77,7 @@ class Scoreboard {
         // update row coords
         const auxY = this.rows[i].y
         this.rows[i].y = this.rows[i + 1].y
-        this.rows[i+1].y = auxY
+        this.rows[i + 1].y = auxY
       } else {
         break;
       }
