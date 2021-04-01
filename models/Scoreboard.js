@@ -50,7 +50,6 @@ class Scoreboard {
       team.score += 1;
       team.lastAc = time;
       team.penality += time + this.penality * team.submissions[p];
-      console.log(team.teamName, team.lastAc)
     } else {
       team.submissions[p] += 1;
     }

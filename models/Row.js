@@ -11,9 +11,9 @@ class Row {
     this.position = header ? '' : position;
     this.uid = uid;
     this.college = college;
-    this.teamName = header ? 'Team': teamName;
-    this.score = header ? 'Score' : 0;
-    this.penality = header ? 'Penalty' : 0;
+    this.teamName = header ? 'TEAM': teamName;
+    this.score = header ? 'SCORE' : 0;
+    this.penality = header ? 'PENALTY' : 0;
     this.acs = header ? ' ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').slice(0, this.scoreboard.qtdProblems+1) : new Array(this.scoreboard.qtdProblems+1).fill(0);
     this.submissions = new Array(this.scoreboard.qtdProblems+1).fill(0);
     this.x = x;
@@ -32,7 +32,7 @@ class Row {
   drawName(text, x, y) {
     this.c.strokeRect(x, y, this.size[1] * this.w, -this.h);
     let [dx, dy, offset] = align(text, 'left', this.size[1] * this.w, this.h);
-    this.c.fillText(text, x + dx, y -dy, this.size[1] * this.w - offset);  
+    this.c.fillText(text, x + dx, y -dy, this.size[1] * this.w - offset);
   }
   drawScore(text, x, y) {
     this.c.strokeRect(x, y, this.size[2] * this.w, -this.h);
