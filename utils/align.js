@@ -2,7 +2,7 @@ import canvasSingleton from '../models/Canvas.js'
 
 export function align(text, type, width='', height='', font=25) {
   const ctx = canvasSingleton.getInstance().getContext("2d");
-  ctx.font = `${font}px MonospaceTypewriter`;
+  ctx.font = `${font}px Montserrat-MediumTypewriter`;
   const textMetrics = ctx.measureText(text)
   const text_w = textMetrics.width
   const text_h = textMetrics.actualBoundingBoxAscent

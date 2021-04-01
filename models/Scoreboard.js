@@ -3,7 +3,7 @@ import cameraSingleton from './Camera.js'
 import canvasSingleton from './Canvas.js'
 
 class Scoreboard {
-  constructor(eventTitle, { duration, frozen, blind, penality }, qtdProblems, font = "30px MonospaceTypewriter") {
+  constructor(eventTitle, { duration, frozen, blind, penality }, qtdProblems, font = "30px Montserrat-MediumTypewriter") {
     this.camera = cameraSingleton.getInstance();
     this.rows = new Array(0);
     this.rowsUid = {}
@@ -29,7 +29,7 @@ class Scoreboard {
     const c = canvasSingleton.getInstance().getContext('2d');
     this.rowWidth = 0.95 * canvas.width;
     c.font = this.font;
-    c.fillStyle = 'blue';
+    c.fillStyle = 'white';
     c.textAlign = "left";
     this.rows.map((row) => row.draw())
   }

@@ -7,7 +7,7 @@ import canvasSingleton from './models/Canvas.js'
 let canvas = canvasSingleton.getInstance()
 canvas.width = window.innerWidth - 5;
 canvas.height = window.innerHeight - 5;
-loadFont("MonospaceTypewriter")
+loadFont("Montserrat-MediumTypewriter")
 
 const FILE_SEPARATOR = String.fromCharCode(28);
 

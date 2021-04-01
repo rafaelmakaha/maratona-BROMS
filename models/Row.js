@@ -62,6 +62,8 @@ class Row {
     this.h = this.scoreboard.rowHeight;
     this.n = this.scoreboard.qtdProblems+1;
 
+    this.c.strokeStyle = '#AAA'
+
     const a = Math.max(this.camera.y, this.y)
     const b = Math.min(this.camera.y + this.camera.h, this.y + this.h)
 
