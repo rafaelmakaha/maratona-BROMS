@@ -92,4 +92,6 @@ O Scoreboard já está funcionando com dependências mínimas, necessitando apen
 
 ## 5.Cronograma
 
-Cronograma de Gantt com as atividades já realizadas e que serão realizadas no semestre seguinte
+<!-- Cronograma de Gantt com as atividades já realizadas e que serão realizadas no semestre seguinte -->
+
+![Gantt](ganttCronogram.png)

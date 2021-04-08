@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?><project name="Untitled Gantt Project" company="" webLink="http://" view-date="2021-02-21" view-index="0" gantt-divider-location="300" resource-divider-location="300" version="3.0.3000" locale="pt_BR">
+    <description/>
+    <view zooming-state="default:6" id="gantt-chart">
+        <field id="tpd3" name="Nome" width="167" order="0"/>
+        <field id="tpd4" name="Data inicial" width="65" order="1"/>
+        <field id="tpd5" name="Data final" width="64" order="2"/>
+    </view>
+    <view id="resource-table">
+        <field id="0" name="Nome" width="210" order="0"/>
+        <field id="1" name="Função" width="86" order="1"/>
+    </view>
+    <!-- -->
+    <calendars>
+        <day-types>
+            <day-type id="0"/>
+            <day-type id="1"/>
+            <default-week id="1" name="default" sun="1" mon="0" tue="0" wed="0" thu="0" fri="0" sat="1"/>
+            <only-show-weekends value="false"/>
+            <overriden-day-types/>
+            <days/>
+        </day-types>
+    </calendars>
+    <tasks empty-milestones="true">
+        <taskproperties>
+            <taskproperty id="tpd0" name="type" type="default" valuetype="icon"/>
+            <taskproperty id="tpd1" name="priority" type="default" valuetype="icon"/>
+            <taskproperty id="tpd2" name="info" type="default" valuetype="icon"/>
+            <taskproperty id="tpd3" name="name" type="default" valuetype="text"/>
+            <taskproperty id="tpd4" name="begindate" type="default" valuetype="date"/>
+            <taskproperty id="tpd5" name="enddate" type="default" valuetype="date"/>
+            <taskproperty id="tpd6" name="duration" type="default" valuetype="int"/>
+            <taskproperty id="tpd7" name="completion" type="default" valuetype="int"/>
+            <taskproperty id="tpd8" name="coordinator" type="default" valuetype="text"/>
+            <taskproperty id="tpd9" name="predecessorsr" type="default" valuetype="text"/>
+        </taskproperties>
+        <task id="0" name="US01 - Visualizar times, pontos e problemas" color="#8cb6ce" meeting="false" start="2021-02-25" duration="5" complete="0" thirdDate="2021-04-08" thirdDate-constraint="0" expand="true"/>
+        <task id="6" name="US02 - Redimensionalização automática" color="#8cb6ce" meeting="false" start="2021-03-03" duration="6" complete="0" thirdDate="2021-02-22" thirdDate-constraint="0" expand="true"/>
+        <task id="8" name="US03 - Rolagem com scroll e setas" color="#8cb6ce" meeting="false" start="2021-03-11" duration="5" complete="0" thirdDate="2021-02-22" thirdDate-constraint="0" expand="true"/>
+        <task id="10" name="US04 - Alinhamento individual de cada informação" color="#8cb6ce" meeting="false" start="2021-03-18" duration="5" complete="0" thirdDate="2021-02-22" thirdDate-constraint="0" expand="true"/>
+        <task id="12" name="US05 - Leitura das submissões" color="#8cb6ce" meeting="false" start="2021-03-25" duration="6" complete="0" thirdDate="2021-02-22" thirdDate-constraint="0" expand="true"/>
+        <task id="15" name="US06 - Atualização de posições e informações" color="#8cb6ce" meeting="false" start="2021-03-25" duration="6" complete="0" thirdDate="2021-02-22" thirdDate-constraint="0" expand="true"/>
+    </tasks>
+    <resources/>
+    <allocations/>
+    <vacations/>
+    <previous/>
+    <roles roleset-name="Default"/>
+</project>
