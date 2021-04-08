@@ -39,6 +39,9 @@
         <task id="10" name="US04 - Alinhamento individual de cada informação" color="#8cb6ce" meeting="false" start="2021-03-18" duration="5" complete="0" thirdDate="2021-02-22" thirdDate-constraint="0" expand="true"/>
         <task id="12" name="US05 - Leitura das submissões" color="#8cb6ce" meeting="false" start="2021-03-25" duration="6" complete="0" thirdDate="2021-02-22" thirdDate-constraint="0" expand="true"/>
         <task id="15" name="US06 - Atualização de posições e informações" color="#8cb6ce" meeting="false" start="2021-03-25" duration="6" complete="0" thirdDate="2021-02-22" thirdDate-constraint="0" expand="true"/>
+        <task id="20" name="Atualização Documento TCC" color="#8cb6ce" meeting="false" start="2021-04-01" duration="6" complete="0" thirdDate="2021-02-22" thirdDate-constraint="0" expand="true"/>
+        <task id="16" name="US07 - Apresentar desenho mapa do Brasil" color="#8cb6ce" meeting="false" start="2021-04-08" duration="7" complete="0" thirdDate="2021-02-22" thirdDate-constraint="0" expand="true"/>
+        <task id="17" name="US08 - Apresentar times de cada região do país" color="#8cb6ce" meeting="false" start="2021-04-08" duration="7" complete="0" thirdDate="2021-02-22" thirdDate-constraint="0" expand="true"/>
     </tasks>
     <resources/>
     <allocations/>
