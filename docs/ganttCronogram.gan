@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?><project name="Untitled Gantt Project" company="" webLink="http://" view-date="2021-02-21" view-index="0" gantt-divider-location="300" resource-divider-location="300" version="3.0.3000" locale="pt_BR">
+<?xml version="1.0" encoding="UTF-8"?><project name="Untitled Gantt Project" company="" webLink="http://" view-date="2021-02-21" view-index="0" gantt-divider-location="508" resource-divider-location="300" version="3.0.3000" locale="pt_BR">
     <description/>
     <view zooming-state="default:6" id="gantt-chart">
-        <field id="tpd3" name="Nome" width="167" order="0"/>
-        <field id="tpd4" name="Data inicial" width="65" order="1"/>
-        <field id="tpd5" name="Data final" width="64" order="2"/>
+        <field id="tpd3" name="Nome" width="236" order="0"/>
+        <field id="tpd4" name="Data inicial" width="134" order="1"/>
+        <field id="tpd5" name="Data final" width="134" order="2"/>
     </view>
     <view id="resource-table">
         <field id="0" name="Nome" width="210" order="0"/>

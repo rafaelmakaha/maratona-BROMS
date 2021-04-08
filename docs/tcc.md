@@ -47,12 +47,13 @@ O projeto segue a metodologia ágil com pequenos ciclos iterativos para constru�
 ## 3.2. Ferramentas utilizadas (hardware e software, versões de cada)
 
 As seguintes ferramentas foram utilizadas, tanto para a construção da ferramenta quanto para a organização do projeto:
-
+<!-- justificativa de cada um e como impactou-->
 * Git v2.31.0
 * HTML v5.0
 * Javascript 
 * Editor de texto Visual Studio Code v1.55
 * Navegador com suporte a HTML5
+* servidor web usando python ***
 
 ## 3.3. Fluxo de trabalho
 
@@ -83,8 +84,9 @@ No presente momento, a ferramenta já está em desenvolvimento e se encontra pr�
 
 A análise das submissões é feita a partir de um documento em texto que será atualizado a partir de uma requisição web. O presente estado da ferramenta não verifica se uma submissão já foi computada.
 
-## 4.2. Semelhanças e diferenças com resultados comparáveis da literatura
+## 4.2. Semelhanças e diferenças com resultados comparáveis com as outras ferramentas
 
+<!-- apontar semelhanças e diferenças -->
 
 ## 4.3. Melhorias obtidas
 
@@ -93,5 +95,7 @@ O Scoreboard já está funcionando com dependências mínimas, necessitando apen
 ## 5.Cronograma
 
 <!-- Cronograma de Gantt com as atividades já realizadas e que serão realizadas no semestre seguinte -->
+
+<!-- gantter latex lib -->
 
 ![Gantt](ganttCronogram.png)
