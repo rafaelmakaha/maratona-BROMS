@@ -1,0 +1,41 @@
+Saad
+	resumo na metodologia com as dependencias necessarias para cada software <---
+	detalhar melhor as novas caracteristicas que serao implementadas
+	apontar que funciona em outros navegadores
+	apontar que o servidor python não é único
+	indicar que os demandantes são ambos bruno e edson
+	
+Bruno
+	acentuação de texto e imagens
+	definir melhor o problema <---
+	expor as ferramentas e seus problemas.
+	definir o que é o maratona-animeitor: 
+		ambiente animado. 
+		precisa ser instalado. 
+		indicar os scenarios em que ele é utilizado.
+	definir maratona-live
+	definir maratona-rust:
+		necessita do rust.
+		precisa ser instalado.
+	indicar que os placares são para os apresentadores.
+	indicar que o processamento é passado para os clientes.
+	realizar uma análise de banda e processamento.
+	verificar quanto de banda que o placar necessita.
+	quanto de cpu ele o vai necessitar.
+	apresentar o formato do arquivo.
+	a submissão pode estar em pendente.
+	implementar o auto-scroll da maratona e foco automatico nas trocas de posições.
+	implementar o modo premiação: 
+		apresentação time a time ao final do contest.
+		identificar um range de times a serem apresentados?
+		menção honrosa aos 
+	foco no texto: melhorar o problema, soluções e comparações.
+	
+edson
+	gerar api simples para simular o BOCA
+	retornar arquivo json com as submissões
+	verificar se a ultima requisição é a mais atual
+	
+	
+	19 de julho (19/07) inicio das aulas
+	
