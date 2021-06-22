@@ -34,15 +34,11 @@ const main = async () => {
   })
 
   scoreboard.draw()
-  console.log(runs.length)
   runs.map((run,i) => {
-    if(run[4].charCodeAt(0) === "Y".charCodeAt(0)){
-      setTimeout(() => {
-        scoreboard.processRun(run)
-        redrawAll()
-      }, 1000*i);
-    }
-
+    setTimeout(() => {
+      scoreboard.processRun(run)
+      redrawAll()
+    }, 10*i);
   })
 }
 

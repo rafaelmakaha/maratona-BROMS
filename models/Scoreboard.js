@@ -49,7 +49,7 @@ class Scoreboard {
       team.acs[p] = 1;
       team.score += 1;
       team.lastAc = time;
-      team.penality += time + this.penality * team.submissions[p];
+      team.penality += time + (this.penality * team.submissions[p]);
     } else {
       team.submissions[p] += 1;
     }
