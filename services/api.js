@@ -29,7 +29,7 @@ export const getRuns = (url) => {
         const [runid, time, teamUid, problem, verdict] = run.split(FILE_SEPARATOR);
         return [parseInt(runid), parseInt(time), teamUid, problem, verdict]
       })
-      return runs
+      return runs.reverse()
     })
     .then(resolve)
     .catch(reject)
