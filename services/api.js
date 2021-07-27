@@ -1,41 +1,49 @@
 const FILE_SEPARATOR = String.fromCharCode(28);
+const baseUrl = 'http://localhost:8000'
 
-export const getContest = (url) => {
+export const getContest = () => {
+  const url = `${baseUrl}/contest`;
   return new Promise((resolve, reject) => {
     fetch(url)
-    .then(response => response.text())
-    .then(text => { 
-      text = text.split('\n')
-      let [eventTitle, eventInfo, values] = text
-      const [duration, frozen, blind, penality] = eventInfo.split(FILE_SEPARATOR)
-      eventInfo = {duration, frozen, blind, penality}
-      const [qtdTeams, qtdProblems] = values.split(FILE_SEPARATOR)
-      text = text.slice(3)
-      const teams = text.slice(0,qtdTeams)
-      return {eventTitle, eventInfo, values, qtdTeams, qtdProblems, teams}
-    })
+    .then(response => response.json())
     .then(resolve)
     .catch(reject)
   })
 }
 
-export const getRuns = (url) => {
+export const getContestEnd = () => {
+  const url = `${baseUrl}/contest/finish`;
   return new Promise((resolve, reject) => {
     fetch(url)
-    .then(response => response.text())
-    .then(text => { 
-      text = text.split('\n').slice(0,-1);
-      const runs = text.map((run,i) => {
-        const [runid, time, teamUid, problem, verdict] = run.split(FILE_SEPARATOR);
-        return [parseInt(runid), parseInt(time), teamUid, problem, verdict]
-      })
-      return runs.reverse()
-    })
+    .then(response => response.json())
     .then(resolve)
     .catch(reject)
   })
 }
 
-function compare(a,b) {
-  return parseInt(a[0]) - parseInt(b[0])
+export const getRuns = () => {
+  const url = `${baseUrl}/runs`
+  return new Promise((resolve, reject) => {
+    fetch(url)
+    .then(response => response.json())
+    .then(resolve)
+    .catch(reject)
+  })
+}
+
+export const getNewRuns = (runId) => {
+  const url = `${baseUrl}/runs/diff`;
+  const method = 'POST';
+  return new Promise((resolve, reject) => {
+    fetch(url, {
+      method,
+      headers: {
+        'Access-Control-Allow-Origin':'*'
+      },
+      body: JSON.stringify(runId)
+    })
+    .then(response => response.json())
+    .then(resolve)
+    .catch(reject)
+  })
 }

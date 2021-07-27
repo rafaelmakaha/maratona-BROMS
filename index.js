@@ -1,6 +1,6 @@
 import Scoreboard from './models/Scoreboard.js';
 import cameraSingleton from './models/Camera.js';
-import { getContest, getRuns } from './services/api.js';
+import { getContest, getRuns, getNewRuns, getContestEnd } from './services/api.js';
 import loadFont from './utils/loadFont.js';
 import canvasSingleton from './models/Canvas.js'
 
@@ -15,31 +15,41 @@ const camera = cameraSingleton.getInstance();
 let scoreboard;
 
 const main = async () => {
-  const rawData = await getContest('./sample/contest');
-  const runs = await getRuns('./sample/runs');
+  const rawData = await getContest();
+  let runs = await getRuns()
   const {
-    eventTitle,
-    eventInfo,
-    qtdProblems,
+    name: eventTitle,
+    duration, frozen, blind, penality,
+    n_questions: qtdProblems,
     teams
   } = rawData
 
   // Instatiate Scoreboard
-  scoreboard = new Scoreboard(eventTitle, eventInfo, qtdProblems)
+  scoreboard = new Scoreboard(eventTitle, {duration, frozen, blind, penality}, qtdProblems)
 
   // Instatiate teams
   teams.map((team, index) => {
-    let teamInfo = team.split(FILE_SEPARATOR)
-    scoreboard.addRow(teamInfo)
+    scoreboard.addRow(team)
   })
 
   scoreboard.draw()
   runs.map((run,i) => {
     setTimeout(() => {
       scoreboard.processRun(run)
-      redrawAll()
     }, 10*i);
-  })
+    redrawAll();
+  });
+  
+  setInterval(async () => {
+    if(await getContestEnd()) return 
+    runs = await getNewRuns(runs[runs.length - 1]["runId"])
+    runs.map((run,i) => {
+      setTimeout(() => {
+        scoreboard.processRun(run)
+        redrawAll();
+      }, 1000*i);
+    })
+  }, 5000);
 }
 
 const redrawAll = () => {

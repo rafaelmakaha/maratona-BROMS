@@ -33,14 +33,15 @@ class Scoreboard {
     c.textAlign = "left";
     this.rows.map((row) => row.draw())
   }
-  addRow(teamInfo) {
+  addRow({teamId, college, name}) {
     this.totalRows++;
-    this.rows.push(new Row(this, this.totalRows, teamInfo, this.x, this.y + (this.totalRows * this.rowHeight)));
-    this.rowsUid[teamInfo[0]] = this.rows[this.totalRows]
+    this.rows.push(new Row(this, this.totalRows, [teamId, college, name ], this.x, this.y + (this.totalRows * this.rowHeight)));
+    this.rowsUid[teamId] = this.rows[this.totalRows]
     this.camera.update((this.totalRows + 1) * this.rowHeight);
   }
   notify(position) { }
-  processRun([runid, time, teamUid, problem, verdict]) {
+  processRun({runId, time, teamUid, problem, verdict}) {
+    // console.log(teamUid, this.rowsUid)
     const i = this.rowsUid[teamUid].position;
     const p = problem.charCodeAt(0) - 64;
     const team = this.rows[i];
