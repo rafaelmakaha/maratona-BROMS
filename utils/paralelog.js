@@ -1,7 +1,7 @@
 import canvasSingleton from '../models/Canvas.js'
 import { CONTANTS } from '../settings/contants.js';
 
-export const paralelog = (x,y,w,h, fillColor= 'silver', borderColor = 'black', ) => {
+export const paralelog = (x,y,w,h, fillColor= 'gray', borderColor = 'black', ) => {
     const c = canvasSingleton.getInstance().getContext("2d");
     const ang = CONTANTS.ang
     c.beginPath()

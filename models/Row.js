@@ -28,8 +28,19 @@ class Row {
     this.n = this.scoreboard.qtdProblems +1;
   }
   drawPosition(text, x, y) {
-    paralelog(x, y, this.size[0] * this.w, -this.h, 'gold');;
+    let color='gray'
+    if (this.header){
+      paralelog(x, y, this.size[0] * this.w, -this.h);
+    }else if(this.position <= 3){
+      color='gold';
+    }else if(this.position <= 6){
+      color='silver';
+    }else if(this.position <= 10){
+      color='#cc6633';
+    }
+    paralelog(x, y, this.size[0] * this.w, -this.h, color);
     let [dx, dy] = align(text, 'center', this.size[0] * this.w, this.h);
+    
     drawText(text, x + dx, y -dy);
   }
   drawName(text, x, y) {
@@ -52,9 +63,13 @@ class Row {
   drawQuestions(x, y, w) {
     let i = 1;
     while(i < this.n) {
-      paralelog(x, y, w, -this.h);
-      let [dx, dy] = align(this.acs[i], 'center', w, this.h)
-      drawText(this.acs[i], x + dx, y - dy, w)
+      if(this.header){
+        paralelog(x, y, w, -this.h);
+        let [dx, dy] = align(this.acs[i], 'center', w, this.h)
+        drawText(this.acs[i], x + dx, y - dy, w)
+      } else {
+        paralelog(x, y, w, -this.h, this.acs[i] ? "green" : "red");
+      }
       x += w
       i++;
     }
