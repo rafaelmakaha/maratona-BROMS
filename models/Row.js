@@ -1,6 +1,9 @@
 import {align} from '../utils/align.js';
+import {paralelog} from '../utils/paralelog.js';
+import {drawText} from '../utils/drawText.js';
 import cameraSingleton from './Camera.js';
 import canvasSingleton from './Canvas.js';
+import { CONTANTS } from '../settings/contants.js';
 
 class Row {
   constructor(scoreboard, position, [uid, college, teamName], x, y, header=false) {
@@ -25,33 +28,33 @@ class Row {
     this.n = this.scoreboard.qtdProblems +1;
   }
   drawPosition(text, x, y) {
-    this.c.strokeRect(x, y, this.size[0] * this.w, -this.h);;
+    paralelog(x, y, this.size[0] * this.w, -this.h, 'gold');;
     let [dx, dy] = align(text, 'center', this.size[0] * this.w, this.h);
-    this.c.fillText(text, x + dx, y -dy);
+    drawText(text, x + dx, y -dy);
   }
   drawName(text, x, y) {
-    this.c.strokeRect(x, y, this.size[1] * this.w, -this.h);
+    paralelog(x, y, this.size[1] * this.w, -this.h);
     let [dx, dy, offset] = align(text, 'left', this.size[1] * this.w, this.h);
-    this.c.fillText(text, x + dx, y -dy, this.size[1] * this.w - offset);
+    drawText(text, x + dx, y -dy, this.size[1] * this.w - offset);
   }
   drawScore(text, x, y) {
-    this.c.strokeRect(x, y, this.size[2] * this.w, -this.h);
+    paralelog(x, y, this.size[2] * this.w, -this.h);
     let [dx, dy] = align(text, 'right', this.size[2] * this.w, this.h);
     if (this.header) [dx, dy] = align(text, 'center', this.size[2] * this.w, this.h);
-    this.c.fillText(text, x + dx, y - dy);
+    drawText(text, x + dx, y - dy, this.size[2] * this.w);
   }
   drawPenality(text, x, y) {
-    this.c.strokeRect(x, y, this.size[3] * this.w, -this.h);
+    paralelog(x, y, this.size[3] * this.w, -this.h);
     let [dx, dy] = align(text, 'right', this.size[3] * this.w, this.h);
     if (this.header) [dx, dy] = align(text, 'center', this.size[3] * this.w, this.h);
-    this.c.fillText(text, x + dx, y - dy);
+    drawText(text, x + dx, y - dy);
   }
   drawQuestions(x, y, w) {
     let i = 1;
     while(i < this.n) {
-      this.c.strokeRect(x, y, w, -this.h);
+      paralelog(x, y, w, -this.h);
       let [dx, dy] = align(this.acs[i], 'center', w, this.h)
-      this.c.fillText(this.acs[i], x + dx, y - dy, w)
+      drawText(this.acs[i], x + dx, y - dy, w)
       x += w
       i++;
     }
@@ -71,7 +74,8 @@ class Row {
 
     let x = this.x - this.camera.x
     let y = this.y - this.camera.y
-    this.c.strokeRect(x,y,this.w,-this.h)
+    // this.c.strokeRect(x,y,this.w,-this.h)
+    // paralelog(x,y,this.w,this.h)
 
     this.drawPosition(this.position, x, y)
 

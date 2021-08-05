@@ -1,4 +1,4 @@
-export default function loadFont(fontname){
+export function loadFont(fontname){
   var canvas = document.createElement("canvas");
   var ctx = canvas.getContext("2d");
   ctx.font = "4px "+fontname;

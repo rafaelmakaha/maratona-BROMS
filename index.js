@@ -1,7 +1,7 @@
 import Scoreboard from './models/Scoreboard.js';
 import cameraSingleton from './models/Camera.js';
 import { getContest, getRuns, getNewRuns, getContestEnd } from './services/api.js';
-import loadFont from './utils/loadFont.js';
+import {loadFont} from './utils/loadFont.js';
 import canvasSingleton from './models/Canvas.js'
 
 let canvas = canvasSingleton.getInstance()
