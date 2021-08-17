@@ -1,3 +1,3 @@
 export const COLORS = {
-    text : 'white'
+    text : 'blue',
 };

@@ -6,12 +6,12 @@ import canvasSingleton from './Canvas.js';
 import { CONTANTS } from '../settings/contants.js';
 
 class Row {
-  constructor(scoreboard, position, [uid, college, teamName], x, y, header=false) {
+  constructor(scoreboard, position, [uid, college, teamName], x, y, header=false, marginY=0) {
     this.header = header;
     this.lastAc = 0;
     this.camera = cameraSingleton.getInstance();
     this.scoreboard = scoreboard;
-    this.position = header ? '' : position;
+    this.position = header ? '#' : position;
     this.uid = uid;
     this.college = college;
     this.teamName = header ? 'TEAM': teamName;
@@ -21,7 +21,8 @@ class Row {
     this.submissions = new Array(this.scoreboard.qtdProblems+1).fill(0);
     this.x = x;
     this.y = y;
-    this.size = [0.05, 0.3, 0.07, 0.09]; //Sizes: Position, Name, Score, Penality
+    this.size = [0.05, 0.45, 0.07, 0.09]; //Sizes: Position, Name, Score, Penality
+    this.marginY = marginY;
     this.c = this.scoreboard.context;
     this.w = this.scoreboard.rowWidth;
     this.h = this.scoreboard.rowHeight;
@@ -29,34 +30,36 @@ class Row {
   }
   drawPosition(text, x, y) {
     let color='gray'
-    if (this.header){
-      paralelog(x, y, this.size[0] * this.w, -this.h);
-    }else if(this.position <= 3){
+    // if (this.header){
+    // paralelog(x, y - this.marginY, this.size[0] * this.w, - (this.h - 2*this.marginY));
+    if(this.position <= 3){
       color='gold';
     }else if(this.position <= 6){
       color='silver';
     }else if(this.position <= 10){
       color='#cc6633';
+    }else{
+      color= 'black';
     }
-    paralelog(x, y, this.size[0] * this.w, -this.h, color);
+    paralelog(x, y - this.marginY, this.size[0] * this.w, -(this.h - 2*this.marginY), color);
     let [dx, dy] = align(text, 'center', this.size[0] * this.w, this.h);
     
-    drawText(text, x + dx, y -dy);
+    drawText(text, x + dx, y -dy, undefined, 'white');
   }
   drawName(text, x, y) {
-    paralelog(x, y, this.size[1] * this.w, -this.h);
+    paralelog(x, y - this.marginY, this.size[1] * this.w, -(this.h - 2*this.marginY));
     let [dx, dy, offset] = align(text, 'left', this.size[1] * this.w, this.h);
     drawText(text, x + dx, y -dy, this.size[1] * this.w - offset);
   }
   drawScore(text, x, y) {
-    paralelog(x, y, this.size[2] * this.w, -this.h);
-    let [dx, dy] = align(text, 'right', this.size[2] * this.w, this.h);
+    paralelog(x, y - this.marginY, this.size[2] * this.w, -(this.h - 2*this.marginY));
+    let [dx, dy] = align(text, 'center', this.size[2] * this.w, this.h);
     if (this.header) [dx, dy] = align(text, 'center', this.size[2] * this.w, this.h);
     drawText(text, x + dx, y - dy, this.size[2] * this.w);
   }
   drawPenality(text, x, y) {
-    paralelog(x, y, this.size[3] * this.w, -this.h);
-    let [dx, dy] = align(text, 'right', this.size[3] * this.w, this.h);
+    paralelog(x, y - this.marginY, this.size[3] * this.w, -(this.h - 2*this.marginY));
+    let [dx, dy] = align(text, 'center', this.size[3] * this.w, this.h);
     if (this.header) [dx, dy] = align(text, 'center', this.size[3] * this.w, this.h);
     drawText(text, x + dx, y - dy);
   }
@@ -64,11 +67,11 @@ class Row {
     let i = 1;
     while(i < this.n) {
       if(this.header){
-        paralelog(x, y, w, -this.h);
+        paralelog(x, y - this.marginY, w, -(this.h - 2*this.marginY));
         let [dx, dy] = align(this.acs[i], 'center', w, this.h)
         drawText(this.acs[i], x + dx, y - dy, w)
       } else {
-        paralelog(x, y, w, -this.h, this.acs[i] ? "green" : "red");
+        paralelog(x, y - this.marginY, w, -(this.h - 2*this.marginY), this.acs[i] ? "green" : "red");
       }
       x += w
       i++;

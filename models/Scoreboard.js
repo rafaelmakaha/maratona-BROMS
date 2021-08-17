@@ -3,7 +3,7 @@ import cameraSingleton from './Camera.js'
 import canvasSingleton from './Canvas.js'
 
 class Scoreboard {
-  constructor(eventTitle, { duration, frozen, blind, penality }, qtdProblems, font = "30px Montserrat-MediumTypewriter") {
+  constructor(eventTitle, { duration, frozen, blind, penality }, qtdProblems, font = "30px blogger-sans.medium") {
     this.camera = cameraSingleton.getInstance();
     this.rows = new Array(0);
     this.rowsUid = {}
@@ -14,7 +14,9 @@ class Scoreboard {
     this.penality = penality;
     this.qtdProblems = parseInt(qtdProblems);
     this.totalRows = 0;
-    this.rowHeight = 40;
+    this.marginX = 5;
+    this.marginY = 5;
+    this.rowHeight = 40 + 2 * this.marginX;
     this.rowWidth = 0.95 * canvas.width;
     this.font = font;
     this.x = 20;
@@ -22,7 +24,7 @@ class Scoreboard {
     this.initHeader()
   }
   initHeader() {
-    this.rows.push(new Row(this, NaN, ['', '', this.eventTitle], this.x, this.y, true))
+    this.rows.push(new Row(this, NaN, ['', '', this.eventTitle], this.x, this.y, true, this.marginX))
   }
   draw() {
     const canvas = canvasSingleton.getInstance();
@@ -35,7 +37,7 @@ class Scoreboard {
   }
   addRow({teamId, college, name}) {
     this.totalRows++;
-    this.rows.push(new Row(this, this.totalRows, [teamId, college, name ], this.x, this.y + (this.totalRows * this.rowHeight)));
+    this.rows.push(new Row(this, this.totalRows, [teamId, college, name ], this.x, this.y + (this.totalRows * this.rowHeight), false, this.marginX));
     this.rowsUid[teamId] = this.rows[this.totalRows]
     this.camera.update((this.totalRows + 1) * this.rowHeight);
   }

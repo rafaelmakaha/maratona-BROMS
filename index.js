@@ -7,7 +7,7 @@ import canvasSingleton from './models/Canvas.js'
 let canvas = canvasSingleton.getInstance()
 canvas.width = window.innerWidth - 5;
 canvas.height = window.innerHeight - 5;
-loadFont("Montserrat-MediumTypewriter")
+loadFont("blogger-sans.medium")
 
 const FILE_SEPARATOR = String.fromCharCode(28);
 
@@ -30,7 +30,7 @@ const main = async () => {
   // Instatiate teams
   teams.map((team, index) => {
     scoreboard.addRow(team)
-  })
+  });
 
   scoreboard.draw()
   runs.map((run,i) => {

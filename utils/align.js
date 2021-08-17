@@ -3,7 +3,7 @@ import { CONTANTS } from '../settings/contants.js';
 
 export function align(text, type, width='', height='', font=20) {
   const ctx = canvasSingleton.getInstance().getContext("2d");
-  ctx.font = `${font}px Montserrat-MediumTypewriter`;
+  ctx.font = `bold ${font}px blogger-sans.medium`;
   const textMetrics = ctx.measureText(text)
   const text_w = textMetrics.width
   const text_h = textMetrics.actualBoundingBoxAscent
