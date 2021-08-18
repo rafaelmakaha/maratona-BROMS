@@ -16,7 +16,7 @@ class Scoreboard {
     this.totalRows = 0;
     this.marginX = 5;
     this.marginY = 5;
-    this.rowHeight = 40 + 2 * this.marginX;
+    this.rowHeight = 40 + 2 * this.marginY;
     this.rowWidth = 0.95 * canvas.width;
     this.font = font;
     this.x = 20;
@@ -24,20 +24,20 @@ class Scoreboard {
     this.initHeader()
   }
   initHeader() {
-    this.rows.push(new Row(this, NaN, ['', '', this.eventTitle], this.x, this.y, true, this.marginX))
+    this.rows.push(new Row(this, NaN, ['', '', this.eventTitle], this.x, this.y, true, this.marginY))
   }
   draw() {
     const canvas = canvasSingleton.getInstance();
     const c = canvasSingleton.getInstance().getContext('2d');
     this.rowWidth = 0.95 * canvas.width;
     c.font = this.font;
-    c.fillStyle = 'white';
-    c.textAlign = "left";
+    // c.fillStyle = COLORS.white;
+    // c.textAlign = "left";
     this.rows.map((row) => row.draw())
   }
   addRow({teamId, college, name}) {
     this.totalRows++;
-    this.rows.push(new Row(this, this.totalRows, [teamId, college, name ], this.x, this.y + (this.totalRows * this.rowHeight), false, this.marginX));
+    this.rows.push(new Row(this, this.totalRows, [teamId, college, name ], this.x, this.y + (this.totalRows * this.rowHeight), false, this.marginY));
     this.rowsUid[teamId] = this.rows[this.totalRows]
     this.camera.update((this.totalRows + 1) * this.rowHeight);
   }

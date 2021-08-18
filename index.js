@@ -3,6 +3,12 @@ import cameraSingleton from './models/Camera.js';
 import { getContest, getRuns, getNewRuns, getContestEnd } from './services/api.js';
 import {loadFont} from './utils/loadFont.js';
 import canvasSingleton from './models/Canvas.js'
+import { COLORS } from './settings/colors.js';
+
+const body = document.getElementsByTagName('body')
+console.log(body)
+body[0].style.margin = 0;
+body[0].style.backgroundColor = COLORS.bodyBackground;
 
 let canvas = canvasSingleton.getInstance()
 canvas.width = window.innerWidth - 5;

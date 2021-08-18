@@ -4,6 +4,7 @@ import {drawText} from '../utils/drawText.js';
 import cameraSingleton from './Camera.js';
 import canvasSingleton from './Canvas.js';
 import { CONTANTS } from '../settings/contants.js';
+import { COLORS } from '../settings/colors.js';
 
 class Row {
   constructor(scoreboard, position, [uid, college, teamName], x, y, header=false, marginY=0) {
@@ -29,22 +30,22 @@ class Row {
     this.n = this.scoreboard.qtdProblems +1;
   }
   drawPosition(text, x, y) {
-    let color='gray'
+    let color;
     // if (this.header){
     // paralelog(x, y - this.marginY, this.size[0] * this.w, - (this.h - 2*this.marginY));
     if(this.position <= 3){
-      color='gold';
+      color = COLORS.goldPosition;
     }else if(this.position <= 6){
-      color='silver';
+      color = COLORS.silverPosition;
     }else if(this.position <= 10){
-      color='#cc6633';
+      color = COLORS.bronzePosition;
     }else{
-      color= 'black';
+      color = COLORS.defaultPosition;
     }
     paralelog(x, y - this.marginY, this.size[0] * this.w, -(this.h - 2*this.marginY), color);
     let [dx, dy] = align(text, 'center', this.size[0] * this.w, this.h);
     
-    drawText(text, x + dx, y -dy, undefined, 'white');
+    drawText(text, x + dx, y -dy, undefined, COLORS.positionTextColor);
   }
   drawName(text, x, y) {
     paralelog(x, y - this.marginY, this.size[1] * this.w, -(this.h - 2*this.marginY));
@@ -83,7 +84,7 @@ class Row {
     this.h = this.scoreboard.rowHeight;
     this.n = this.scoreboard.qtdProblems+1;
 
-    this.c.strokeStyle = '#AAA'
+    // this.c.strokeStyle = 'red'
 
     const a = Math.max(this.camera.y, this.y)
     const b = Math.min(this.camera.y + this.camera.h, this.y + this.h)
