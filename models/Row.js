@@ -43,34 +43,35 @@ class Row {
       color = COLORS.defaultPosition;
     }
     paralelog(x, y - this.marginY, this.size[0] * this.w, -(this.h - 2*this.marginY), color);
-    let [dx, dy] = align(text, 'center', this.size[0] * this.w, this.h);
+    // let [dx, dy] = align(text, 'center', this.size[0] * this.w, this.h);
     
-    drawText(text, x + dx, y -dy, undefined, COLORS.positionTextColor);
+    drawText(text, x, y, this.size[0] * this.w, this.h, 'center', {maxWidth: this.size[0] * this.w, textColor:COLORS.positionTextColor});
   }
   drawName(text, x, y) {
     paralelog(x, y - this.marginY, this.size[1] * this.w, -(this.h - 2*this.marginY));
-    let [dx, dy, offset] = align(text, 'left', this.size[1] * this.w, this.h);
-    drawText(text, x + dx, y -dy, this.size[1] * this.w - offset);
+    // let [dx, dy, offset] = align(text, 'left', this.size[1] * this.w, this.h);
+    drawText(text, x, y, this.size[1] * this.w, this.h, 'left', {maxWidth:this.size[1] * this.w});
   }
   drawScore(text, x, y) {
     paralelog(x, y - this.marginY, this.size[2] * this.w, -(this.h - 2*this.marginY));
-    let [dx, dy] = align(text, 'center', this.size[2] * this.w, this.h);
-    if (this.header) [dx, dy] = align(text, 'center', this.size[2] * this.w, this.h);
-    drawText(text, x + dx, y - dy, this.size[2] * this.w);
+    // let [dx, dy] = align(text, 'center', this.size[2] * this.w, this.h);
+    drawText(text, x, y, this.size[2] * this.w, this.h, 'center', {maxWidth:this.size[2] * this.w})
+    // align(text, 'center', this.size[2] * this.w, this.h);
+    // drawText(text, x, y, this.size[2] * this.w);
   }
   drawPenality(text, x, y) {
     paralelog(x, y - this.marginY, this.size[3] * this.w, -(this.h - 2*this.marginY));
-    let [dx, dy] = align(text, 'center', this.size[3] * this.w, this.h);
-    if (this.header) [dx, dy] = align(text, 'center', this.size[3] * this.w, this.h);
-    drawText(text, x + dx, y - dy);
+    // let [dx, dy] = align(text, 'center', this.size[3] * this.w, this.h);
+    // if (this.header) [dx, dy] = align(text, 'center', this.size[3] * this.w, this.h);
+    drawText(text, x, y, this.size[3] * this.w, this.h, 'center', {maxWidth:this.size[3] * this.w});
   }
   drawQuestions(x, y, w) {
     let i = 1;
     while(i < this.n) {
       if(this.header){
         paralelog(x, y - this.marginY, w, -(this.h - 2*this.marginY));
-        let [dx, dy] = align(this.acs[i], 'center', w, this.h)
-        drawText(this.acs[i], x + dx, y - dy, w)
+        // let [dx, dy] = align(this.acs[i], 'center', w, this.h)
+        drawText(this.acs[i], x, y, w, this.h, 'center', {maxWidth:w})
       } else {
         paralelog(x, y - this.marginY, w, -(this.h - 2*this.marginY), this.acs[i] ? "green" : "red");
       }

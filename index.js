@@ -6,7 +6,6 @@ import canvasSingleton from './models/Canvas.js'
 import { COLORS } from './settings/colors.js';
 
 const body = document.getElementsByTagName('body')
-console.log(body)
 body[0].style.margin = 0;
 body[0].style.backgroundColor = COLORS.bodyBackground;
 

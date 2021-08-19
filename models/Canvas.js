@@ -1,4 +1,4 @@
-import { COLORS } from "../settings/colors";
+import { COLORS } from "../settings/colors.js";
 
 let canvasSingleton = (function () {
     var instance;
