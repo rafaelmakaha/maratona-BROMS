@@ -12,7 +12,7 @@ body[0].style.backgroundColor = COLORS.bodyBackground;
 let canvas = canvasSingleton.getInstance()
 canvas.width = window.innerWidth - 5;
 canvas.height = window.innerHeight - 5;
-loadFont("blogger-sans.medium")
+//loadFont("nk57-monospace-no-bd")
 
 const FILE_SEPARATOR = String.fromCharCode(28);
 

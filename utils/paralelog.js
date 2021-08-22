@@ -6,7 +6,7 @@ export const paralelog = (x,y,w,h, fillColor= 'white', borderColor = 'black', ) 
     const ang = CONTANTS.ang
     c.beginPath()
     
-    const dx = h*Math.tan(ang);
+    const dx = h*Math.tan(ang) / 2;
   
     c.lineWidth = 3
     c.strokeStyle = borderColor
@@ -14,8 +14,8 @@ export const paralelog = (x,y,w,h, fillColor= 'white', borderColor = 'black', ) 
   
     c.moveTo(x,y)
     c.lineTo(x+w, y)
-    c.lineTo(x + w - h*Math.tan(ang), y+h)
-    c.lineTo(x - h * Math.tan(ang), y+h)
+    c.lineTo(x + w - dx, y+h)
+    c.lineTo(x - dx, y+h)
     c.lineTo(x,y)
   
     c.fill()

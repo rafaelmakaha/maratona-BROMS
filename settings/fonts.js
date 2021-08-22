@@ -1,3 +1,4 @@
 export const FONTS = {
-    mainText: 'Montserrat-MediumTypewriter',
+    mainText: 'nk57-monospace',
+    mainTextSize: 20
 }
