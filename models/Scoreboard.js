@@ -39,7 +39,7 @@ class Scoreboard {
     this.totalRows++;
     this.rows.push(new Row(this, this.totalRows, [teamId, college, name ], this.x, this.y + (this.totalRows * this.rowHeight), false, this.marginY));
     this.rowsUid[teamId] = this.rows[this.totalRows]
-    this.camera.update((this.totalRows + 1) * this.rowHeight);
+    this.camera.update((this.totalRows + 1) * this.rowHeight + 1); 
   }
   notify(position) { }
   processRun({runId, time, teamUid, problem, verdict}) {

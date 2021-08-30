@@ -1,4 +1,7 @@
 export const FONTS = {
-    mainText: 'nk57-monospace',
-    mainTextSize: 20
+    default: {
+        name: 'nk57-monospace',
+        size: 20,
+        style: 'regular',
+    }
 }

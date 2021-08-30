@@ -12,7 +12,7 @@ body[0].style.backgroundColor = COLORS.bodyBackground;
 let canvas = canvasSingleton.getInstance()
 canvas.width = window.innerWidth - 5;
 canvas.height = window.innerHeight - 5;
-//loadFont("nk57-monospace-no-bd")
+loadFont("nk57-monospace")
 
 const FILE_SEPARATOR = String.fromCharCode(28);
 
@@ -42,19 +42,19 @@ const main = async () => {
     setTimeout(() => {
       scoreboard.processRun(run)
     }, 10*i);
-    redrawAll();
+    // redrawAll();
   });
-  
-  setInterval(async () => {
-    if(await getContestEnd()) return 
-    runs = await getNewRuns(runs[runs.length - 1]["runId"])
-    runs.map((run,i) => {
-      setTimeout(() => {
-        scoreboard.processRun(run)
-        redrawAll();
-      }, 1000*i);
-    })
-  }, 5000);
+  redrawAll()
+  // setInterval(async () => {
+  //   if(await getContestEnd()) return 
+  //   runs = await getNewRuns(runs[runs.length - 1]["runId"])
+  //   runs.map((run,i) => {
+  //     setTimeout(() => {
+  //       scoreboard.processRun(run)
+  //       redrawAll();
+  //     }, 1000*i);
+  //   })
+  // }, 5000);
 }
 
 const redrawAll = () => {

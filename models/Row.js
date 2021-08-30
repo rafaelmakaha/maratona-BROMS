@@ -1,10 +1,11 @@
 import {align} from '../utils/align.js';
-import {paralelog} from '../utils/paralelog.js';
 import {drawText} from '../utils/drawText.js';
 import cameraSingleton from './Camera.js';
 import canvasSingleton from './Canvas.js';
-import { CONTANTS } from '../settings/contants.js';
+import { CONSTANTS } from '../settings/constants.js';
 import { COLORS } from '../settings/colors.js';
+import Parallelogram from './Parallellogram.js';
+import Text from './Text.js';
 
 class Row {
   constructor(scoreboard, position, [uid, college, teamName], x, y, header=false, marginY=0) {
@@ -27,65 +28,50 @@ class Row {
     this.c = this.scoreboard.context;
     this.w = this.scoreboard.rowWidth;
     this.h = this.scoreboard.rowHeight;
-    this.n = this.scoreboard.qtdProblems +1;
+    this.n = this.scoreboard.qtdProblems + 1;
+    this.parallelogs = new Array();
+
+    this.buildParallelogs();
   }
-  drawPosition(text, x, y) {
-    let color;
-    // if (this.header){
-    // paralelog(x, y - this.marginY, this.size[0] * this.w, - (this.h - 2*this.marginY));
+
+  getPositionColor() {
+    let positionColor;
     if(this.position <= 3){
-      color = COLORS.goldPosition;
+      positionColor = COLORS.goldPosition;
     }else if(this.position <= 6){
-      color = COLORS.silverPosition;
+      positionColor = COLORS.silverPosition;
     }else if(this.position <= 10){
-      color = COLORS.bronzePosition;
+      positionColor = COLORS.bronzePosition;
     }else{
-      color = COLORS.defaultPosition;
+      positionColor = COLORS.defaultPosition;
     }
-    paralelog(x, y - this.marginY, this.size[0] * this.w, -(this.h - 2*this.marginY), color);
-    // let [dx, dy] = align(text, 'center', this.size[0] * this.w, this.h);
-    
-    drawText(text, x, y, this.size[0] * this.w, this.h, 'center', {textColor:COLORS.positionTextColor});
+    return positionColor;
   }
-  drawName(text, x, y) {
-    paralelog(x, y - this.marginY, this.size[1] * this.w, -(this.h - 2*this.marginY));
-    // let [dx, dy, offset] = align(text, 'left', this.size[1] * this.w, this.h);
-    drawText(text, x, y, this.size[1] * this.w, this.h, 'left');
-  }
-  drawScore(text, x, y) {
-    paralelog(x, y - this.marginY, this.size[2] * this.w, -(this.h - 2*this.marginY));
-    // let [dx, dy] = align(text, 'center', this.size[2] * this.w, this.h);
-    drawText(text, x, y, this.size[2] * this.w, this.h, 'center')
-    // align(text, 'center', this.size[2] * this.w, this.h);
-    // drawText(text, x, y, this.size[2] * this.w);
-  }
-  drawPenality(text, x, y) {
-    paralelog(x, y - this.marginY, this.size[3] * this.w, -(this.h - 2*this.marginY));
-    // let [dx, dy] = align(text, 'center', this.size[3] * this.w, this.h);
-    // if (this.header) [dx, dy] = align(text, 'center', this.size[3] * this.w, this.h);
-    drawText(text, x, y, this.size[3] * this.w, this.h, 'center');
-  }
-  drawQuestions(x, y, w) {
-    let i = 1;
-    while(i < this.n) {
+
+  buildParallelogs() {
+    let positionColor = this.getPositionColor();
+    this.parallelogs.push(new Parallelogram(this, 0, this.y - this.marginY, this.size[0], this.h - 2*this.marginY, new Text(undefined, this.position, COLORS.positionTextColor), positionColor));
+    this.parallelogs.push(new Parallelogram(this, 0, this.y - this.marginY, this.size[1], this.h - 2*this.marginY, new Text(undefined, this.teamName, COLORS.mainTextColor, this.header ? 'center' : 'left')));
+    this.parallelogs.push(new Parallelogram(this, 0, this.y - this.marginY, this.size[2], this.h - 2*this.marginY, new Text(undefined, this.score)));
+    this.parallelogs.push(new Parallelogram(this, 0, this.y - this.marginY, this.size[3], this.h - 2*this.marginY, new Text(undefined, this.penality)));
+
+    const sum = this.size.reduce((a,b) => a+b)
+    const problemWidth = (1 - sum)/(this.n -1)
+
+    for(let i = 1; i < this.n; i++) {
       if(this.header){
-        paralelog(x, y - this.marginY, w, -(this.h - 2*this.marginY));
-        // let [dx, dy] = align(this.acs[i], 'center', w, this.h)
-        drawText(this.acs[i], x, y, w, this.h, 'center')
+        this.parallelogs.push((new Parallelogram(this, 0, this.y - this.marginY, problemWidth, this.h - 2 * this.marginY, new Text(undefined, this.acs[i]))));
       } else {
-        paralelog(x, y - this.marginY, w, -(this.h - 2*this.marginY), this.acs[i] ? "green" : "red");
+        this.parallelogs.push((new Parallelogram(this, 0, this.y - this.marginY, problemWidth, this.h - 2 * this.marginY, undefined, this.acs[i] ? "green" : "red")));
       }
-      x += w
-      i++;
     }
   }
+
   draw(){
     this.c = canvasSingleton.getInstance().getContext('2d');
     this.w = this.scoreboard.rowWidth;
     this.h = this.scoreboard.rowHeight;
     this.n = this.scoreboard.qtdProblems+1;
-
-    // this.c.strokeStyle = 'red'
 
     const a = Math.max(this.camera.y, this.y)
     const b = Math.min(this.camera.y + this.camera.h, this.y + this.h)
@@ -94,25 +80,47 @@ class Row {
 
     let x = this.x - this.camera.x
     let y = this.y - this.camera.y
-    // this.c.strokeRect(x,y,this.w,-this.h)
-    // paralelog(x,y,this.w,this.h)
 
-    this.drawPosition(this.position, x, y)
-
+    // this.drawPosition(this.position, x, y)
+    let positionColor = this.getPositionColor();
+    this.parallelogs[0].update(x, y, {fillColor: positionColor});
+    this.parallelogs[0].text.update(this.position);
+    this.parallelogs[0].draw()
     x = x + this.size[0] * this.w;
-    this.drawName(this.teamName, x, y)
 
+    // this.drawName(this.teamName, x, y)
+    this.parallelogs[1].update(x, y);
+    this.parallelogs[1].text.update(this.teamName);
+    this.parallelogs[1].draw()
     x += this.size[1] * this.w;
-    this.drawScore(this.score, x, y)
 
+    // this.drawScore(this.score, x, y)
+    this.parallelogs[2].update(x, y)
+    this.parallelogs[2].text.update(this.score);
+    this.parallelogs[2].draw()
     x += this.size[2] * this.w;
-    this.drawPenality(this.penality, x, y)
 
+    // this.drawPenality(this.penality, x, y)
+    this.parallelogs[3].update(x, y)
+    this.parallelogs[3].text.update(this.penality);
+    this.parallelogs[3].draw()
     x += this.size[3] * this.w;
+
     const sum = this.size.reduce((a,b) => a+b)
-    const problemWidth = this.w * (1 - sum)/(this.n -1)
-    this.drawQuestions(x, y, problemWidth)
+    const problemWidth = (1 - sum)/(this.n -1)
+    // this.drawQuestions(x, y, problemWidth)
+    for(let i = 1; i < this.n; i++) {
+      if(this.header){
+        this.parallelogs[i + 3].update(x, y)
+        this.parallelogs[i + 3].text.update(this.acs[i])
+      } else {
+        this.parallelogs[i + 3].update(x, y, {fillColor:this.acs[i] ? "green" : "red"})
+      }
+      this.parallelogs[i + 3].draw()
+      x += problemWidth * this.w;
+    }
   }
+
   update(problemNum, ok, time){
     if(this.acs[problemNum] == 0) {
       this.submissions[problemNum] += 1
