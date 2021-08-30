@@ -1,8 +1,5 @@
-import {align} from '../utils/align.js';
-import {drawText} from '../utils/drawText.js';
 import cameraSingleton from './Camera.js';
 import canvasSingleton from './Canvas.js';
-import { CONSTANTS } from '../settings/constants.js';
 import { COLORS } from '../settings/colors.js';
 import Parallelogram from './Parallellogram.js';
 import Text from './Text.js';
