@@ -68,8 +68,10 @@ class Scoreboard {
         this.rows[i + 1].penality === this.rows[i].penality && this.rows[i + 1].lastAc < this.rows[i].lastAc) {
 
         // update position
-        this.rows[i].position++;
-        this.rows[i + 1].position--;
+        //this.rows[i].position++;
+        //this.rows[i + 1].position--;
+        this.rows[i].setRank(i+1)
+        this.rows[i+1].setRank(i)
 
         // update row object
         const aux = this.rows[i];
@@ -85,6 +87,8 @@ class Scoreboard {
       }
       i--;
     }
+    // this.rows[i].setRank(i)
+    // this.parallelogs[0].setText(this.position);
   }
 }
 

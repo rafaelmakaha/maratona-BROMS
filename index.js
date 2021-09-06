@@ -44,17 +44,17 @@ const main = async () => {
     }, 10*i);
     // redrawAll();
   });
-  redrawAll()
-  // setInterval(async () => {
-  //   if(await getContestEnd()) return 
-  //   runs = await getNewRuns(runs[runs.length - 1]["runId"])
-  //   runs.map((run,i) => {
-  //     setTimeout(() => {
-  //       scoreboard.processRun(run)
-  //       redrawAll();
-  //     }, 1000*i);
-  //   })
-  // }, 5000);
+  // redrawAll()
+  setInterval(async () => {
+    if(await getContestEnd()) return 
+    runs = await getNewRuns(runs[runs.length - 1]["runId"])
+    runs.map((run,i) => {
+      setTimeout(() => {
+        scoreboard.processRun(run)
+        redrawAll();
+      }, 1000*i);
+    })
+  }, 1000);
 }
 
 const redrawAll = () => {

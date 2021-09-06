@@ -1,8 +1,16 @@
 import cameraSingleton from './Camera.js';
 import canvasSingleton from './Canvas.js';
 import { COLORS } from '../settings/colors.js';
-import Parallelogram from './Parallellogram.js';
+import Parallelogram from './Parallelogram.js';
+import PositionParallelogram from './PositionParallelogram.js';
 import Text from './Text.js';
+
+const ROW_FIELDS = {
+  POSITION: 0,
+  TEAM: 1,
+  SCORE: 2,
+  PENALTY: 3,
+}
 
 class Row {
   constructor(scoreboard, position, [uid, college, teamName], x, y, header=false, marginY=0) {
@@ -31,23 +39,11 @@ class Row {
     this.buildParallelogs();
   }
 
-  getPositionColor() {
-    let positionColor;
-    if(this.position <= 3){
-      positionColor = COLORS.goldPosition;
-    }else if(this.position <= 6){
-      positionColor = COLORS.silverPosition;
-    }else if(this.position <= 10){
-      positionColor = COLORS.bronzePosition;
-    }else{
-      positionColor = COLORS.defaultPosition;
-    }
-    return positionColor;
-  }
-
   buildParallelogs() {
-    let positionColor = this.getPositionColor();
-    this.parallelogs.push(new Parallelogram(this, 0, this.y - this.marginY, this.size[0], this.h - 2*this.marginY, new Text(undefined, this.position, COLORS.positionTextColor), positionColor));
+    this.parallelogs.push(new PositionParallelogram(this, 0, this.y - this.marginY, this.size[0], this.h - 2*this.marginY, new Text(undefined, '', COLORS.positionTextColor)));
+    if(this.header){
+      this.parallelogs[ROW_FIELDS.POSITION].setText('#');
+    }
     this.parallelogs.push(new Parallelogram(this, 0, this.y - this.marginY, this.size[1], this.h - 2*this.marginY, new Text(undefined, this.teamName, COLORS.mainTextColor, this.header ? 'center' : 'left')));
     this.parallelogs.push(new Parallelogram(this, 0, this.y - this.marginY, this.size[2], this.h - 2*this.marginY, new Text(undefined, this.score)));
     this.parallelogs.push(new Parallelogram(this, 0, this.y - this.marginY, this.size[3], this.h - 2*this.marginY, new Text(undefined, this.penality)));
@@ -62,6 +58,10 @@ class Row {
         this.parallelogs.push((new Parallelogram(this, 0, this.y - this.marginY, problemWidth, this.h - 2 * this.marginY, undefined, this.acs[i] ? "green" : "red")));
       }
     }
+  }
+
+  setRank(rank){
+    this.parallelogs[ROW_FIELDS.POSITION].setText(String(rank))
   }
 
   draw(){
@@ -79,9 +79,8 @@ class Row {
     let y = this.y - this.camera.y
 
     // this.drawPosition(this.position, x, y)
-    let positionColor = this.getPositionColor();
-    this.parallelogs[0].update(x, y, {fillColor: positionColor});
-    this.parallelogs[0].text.update(this.position);
+    this.parallelogs[0].update(x, y);
+    //this.parallelogs[0].setText(this.position);
     this.parallelogs[0].draw()
     x = x + this.size[0] * this.w;
 
@@ -125,7 +124,7 @@ class Row {
         this.acs[problemNum] = 1;
         this.score += 1;
         this.penality += time + (20 * (this.submissions[problemNum] - 1))
-        this.scoreboard.notify(this.position)
+        //this.scoreboard.notify(this.position)
       }
     }
   }

@@ -16,6 +16,10 @@ class Parallelogram {
         this.w = this.wRel * this.Parent.w;
     }
 
+    setText(text, {selfAlign=this.text.selfAlign}={}){
+        this.text.setText(text, selfAlign);
+    }
+
     draw(){
         const c = canvasSingleton.getInstance().getContext("2d");
         const ang = CONSTANTS.ang
