@@ -1,24 +1,22 @@
-import Row from './Row.js'
+import Row, { ROW_FIELDS } from './Row.js'
 import cameraSingleton from './Camera.js'
 import canvasSingleton from './Canvas.js'
 
 class Scoreboard {
-  constructor(eventTitle, { duration, frozen, blind, penality }, qtdProblems, font = "") {
+  constructor(eventTitle, { duration, frozen, blind, penalty }, qtdProblems, font = "") {
     this.camera = cameraSingleton.getInstance();
     this.rows = new Array(0);
-    this.rowsUid = {}
     this.eventTitle = eventTitle;
     this.duration = duration;
     this.frozen = frozen;
     this.blind = blind;
-    this.penality = penality;
+    this.penalty = penalty;
     this.qtdProblems = parseInt(qtdProblems);
     this.totalRows = 0;
     this.marginX = 5;
     this.marginY = 5;
     this.rowHeight = 40 + 2 * this.marginY;
     this.rowWidth = 0.95 * canvas.width;
-    //this.font = font;
     this.x = 20;
     this.y = 50;
     this.initHeader()
@@ -26,46 +24,45 @@ class Scoreboard {
   initHeader() {
     this.rows.push(new Row(this, NaN, ['', '', this.eventTitle], this.x, this.y, true, this.marginY))
   }
+  update() {
+    this.rows.map((row) => row.update())
+  }
   draw() {
     const canvas = canvasSingleton.getInstance();
     const c = canvasSingleton.getInstance().getContext('2d');
     this.rowWidth = 0.95 * canvas.width;
-    //c.font = this.font;
-    // c.fillStyle = COLORS.white;
-    // c.textAlign = "left";
     this.rows.map((row) => row.draw())
   }
   addRow({teamId, college, name}) {
     this.totalRows++;
     this.rows.push(new Row(this, this.totalRows, [teamId, college, name ], this.x, this.y + (this.totalRows * this.rowHeight), false, this.marginY));
-    this.rowsUid[teamId] = this.rows[this.totalRows]
+    this.rows[this.totalRows].parallelogs[ROW_FIELDS.POSITION].setText(this.totalRows);
     this.camera.update((this.totalRows + 1) * this.rowHeight + 1); 
   }
   notify(position) { }
   processRun({runId, time, teamUid, problem, verdict}) {
-    // console.log(teamUid, this.rowsUid)
-    const i = this.rowsUid[teamUid].position;
-    const p = problem.charCodeAt(0) - 64;
-    const team = this.rows[i];
-    if (team.acs[p] !== 0) return
-    if (verdict.charCodeAt(0) === "Y".charCodeAt(0)) {
-      team.acs[p] = 1;
-      team.score += 1;
-      team.lastAc = time;
-      team.penality += time + (this.penality * team.submissions[p]);
-    } else {
-      team.submissions[p] += 1;
+    let i;
+    for(i = 0; i < this.totalRows; i++){
+      if(this.rows[i].uid === teamUid) break;
     }
-    this.rows[i] = team;
-    this.rowsUid[teamUid] = team;
+    
+    const questionNumber = problem.charCodeAt(0) - 64;
+
+    if (this.rows[i].acs[questionNumber] !== 0) return
+
+    if (verdict.charCodeAt(0) === "Y".charCodeAt(0)) {
+      this.rows[i].accepted(questionNumber, time);
+    } else {
+      this.rows[i].failed(questionNumber);
+    }
     this.updatePosition(i);
   }
   updatePosition(index) {
     let i = index - 1;
     while (i != 0) {
       if (this.rows[i + 1].score > this.rows[i].score ||
-        this.rows[i + 1].score === this.rows[i].score && this.rows[i + 1].penality < this.rows[i].penality ||
-        this.rows[i + 1].penality === this.rows[i].penality && this.rows[i + 1].lastAc < this.rows[i].lastAc) {
+        this.rows[i + 1].score === this.rows[i].score && this.rows[i + 1].accumulatedPenalty < this.rows[i].accumulatedPenalty ||
+        this.rows[i + 1].accumulatedPenalty === this.rows[i].accumulatedPenalty && this.rows[i + 1].lastAc < this.rows[i].lastAc) {
 
         // update position
         //this.rows[i].position++;
@@ -80,15 +77,13 @@ class Scoreboard {
 
         // update row coords
         const auxY = this.rows[i].y
-        this.rows[i].y = this.rows[i + 1].y
-        this.rows[i + 1].y = auxY
+        this.rows[i].updateCoords(this.rows[i].x, this.rows[i + 1].y)
+        this.rows[i + 1].updateCoords(this.rows[i + 1].x, auxY)
       } else {
         break;
       }
       i--;
     }
-    // this.rows[i].setRank(i)
-    // this.parallelogs[0].setText(this.position);
   }
 }
 

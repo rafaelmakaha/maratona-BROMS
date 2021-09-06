@@ -21,25 +21,25 @@ class Parallelogram {
     }
 
     draw(){
-        const c = canvasSingleton.getInstance().getContext("2d");
+        const ctx = canvasSingleton.getInstance().getContext("2d");
         const ang = CONSTANTS.ang
-        c.beginPath()
+        ctx.beginPath()
         
         const dx = -this.h * Math.tan(ang) / 2;
     
-        c.lineWidth = 3
-        c.strokeStyle = this.borderColor
-        c.fillStyle = this.fillColor
+        ctx.lineWidth = 3
+        ctx.strokeStyle = this.borderColor
+        ctx.fillStyle = this.fillColor
     
-        c.moveTo(this.x, this.y)
-        c.lineTo(this.x + this.w, this.y)
-        c.lineTo(this.x + this.w - dx, this.y - this.h)
-        c.lineTo(this.x - dx, this.y - this.h)
-        c.lineTo(this.x, this.y)
+        ctx.moveTo(this.x, this.y)
+        ctx.lineTo(this.x + this.w, this.y)
+        ctx.lineTo(this.x + this.w - dx, this.y - this.h)
+        ctx.lineTo(this.x - dx, this.y - this.h)
+        ctx.lineTo(this.x, this.y)
     
-        c.fill()
-        c.closePath()
-        c.stroke()
+        ctx.fill()
+        ctx.closePath()
+        ctx.stroke()
         
         if(this.text){
             this.text.draw()

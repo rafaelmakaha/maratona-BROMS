@@ -20,15 +20,15 @@ class Text {
     }
 
     draw(){
-        const c = canvasSingleton.getInstance().getContext("2d");
-        c.fillStyle = this.color;
+        const ctx = canvasSingleton.getInstance().getContext("2d");
+        ctx.fillStyle = this.color;
         if(this.Parent){
             const diff = this.Parent.h * Math.tan(CONSTANTS.ang) / 2 // é o cateto oposto
             let [dx, dy, offset] = this.align(this.value, this.selfAlign, this.Parent.w, this.Parent.h, this.font);
             let maxWidth = this.Parent.w - diff - 2 * offset;
-            c.fillText(this.value, this.Parent.x + dx, this.Parent.y - dy, maxWidth);
+            ctx.fillText(this.value, this.Parent.x + dx, this.Parent.y - dy, maxWidth);
         } else {
-            c.fillText(this.value, this.x + dx, this.y - dy, maxWidth);
+            ctx.fillText(this.value, this.x + dx, this.y - dy, maxWidth);
         }
     }
 
