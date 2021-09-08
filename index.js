@@ -40,22 +40,26 @@ const main = async () => {
   updateAll();
   scoreboard.draw()
   runs.map((run,i) => {
-    setTimeout(() => {
+    // setTimeout(() => {
       scoreboard.processRun(run)
-    }, 10*i);
+    // }, 10*i);
     // redrawAll();
   });
   updateAll();
-  redrawAll()
-  setInterval(async () => {
-    if(await getContestEnd()) return 
-    runs = await getNewRuns(runs[runs.length - 1]["runId"])
+  redrawAll();
+  var refresh = setInterval(async () => {
+    console.log(await getContestEnd())
+    if(await getContestEnd()) clearInterval(refresh)
+    let newRuns = await getNewRuns(runs[runs.length - 1]["runId"])
+    if(!newRuns.length) return
+    console.log('passei')
+    runs = newRuns
     runs.map((run,i) => {
-      setTimeout(() => {
+      // setTimeout(() => {
         scoreboard.processRun(run)
         updateAll();
         redrawAll();
-      }, 1000*i);
+      // }, 10*i);
     })
   }, 1000);
 }
