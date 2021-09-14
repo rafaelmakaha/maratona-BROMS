@@ -20,7 +20,7 @@ class Text {
     }
 
     draw(){
-        const ctx = canvasSingleton.getInstance().getContext("2d");
+        const ctx = canvasSingleton.getInstance().getContext();
         ctx.fillStyle = this.color;
         if(this.Parent){
             const diff = this.Parent.h * Math.tan(CONSTANTS.ang) / 2 // é o cateto oposto
@@ -33,7 +33,7 @@ class Text {
     }
 
     align(value, type, width='', height='', font=FONTS.default) {
-        const ctx = canvasSingleton.getInstance().getContext("2d");
+        const ctx = canvasSingleton.getInstance().getContext();
         ctx.font = `${font.size}px ${font.name}`;
         const textMetrics = ctx.measureText(value)
         const text_w = textMetrics.width
@@ -45,7 +45,7 @@ class Text {
           left: [offset + diff,(height - text_h)/2, offset],
           right: [width - text_w - offset < 0 ? width - text_w : width - text_w - offset, (height - text_h)/2, offset],
         }
-        if (text_w > width - diff) return this.align(value, type, width, height, {...font, size: font.size - 1})
+        // if (text_w > width - diff) return this.align(value, type, width, height, {...font, size: font.size - 1})
         return ans[type]
     }
 

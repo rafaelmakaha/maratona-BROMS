@@ -16,7 +16,7 @@ class Scoreboard {
     this.marginX = 5;
     this.marginY = 5;
     this.rowHeight = 40 + 2 * this.marginY;
-    this.rowWidth = 0.95 * canvas.width;
+    this.rowWidth = 0.95 * canvasSingleton.getInstance().width;
     this.x = 20;
     this.y = 50;
     this.initHeader()
@@ -25,11 +25,13 @@ class Scoreboard {
     this.rows.push(new Row(this, NaN, ['', '', this.eventTitle], this.x, this.y, true, this.marginY))
   }
   update() {
+    this.rowHeight = 40 + 2 * this.marginY; 
+    this.rowWidth = 0.95 * canvasSingleton.getInstance().width; 
     this.rows.map((row) => row.update())
   }
   draw() {
     const canvas = canvasSingleton.getInstance();
-    const c = canvasSingleton.getInstance().getContext('2d');
+    const c = canvasSingleton.getInstance().getContext();
     this.rowWidth = 0.95 * canvas.width;
     this.rows.map((row) => row.draw())
   }

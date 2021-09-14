@@ -4,6 +4,7 @@ import { getContest, getRuns, getNewRuns, getContestEnd } from './services/api.j
 import {loadFont} from './utils/loadFont.js';
 import canvasSingleton from './models/Canvas.js'
 import { COLORS } from './settings/colors.js';
+import eventsManager from './models/EventsManager.js';
 
 const body = document.getElementsByTagName('body')
 body[0].style.margin = 0;
@@ -64,45 +65,65 @@ const main = async () => {
   }, 1000);
 }
 
-const updateAll = () => {
+export const updateAll = () => {
   scoreboard.update()
 }
 
-const redrawAll = () => {
+export const redrawAll = () => {
   canvas = canvasSingleton.getInstance();
-  canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
+  canvas.getContext().clearRect(0, 0, canvas.width, canvas.height)
   scoreboard.draw()
 }
 
-window.addEventListener('wheel', (event) => {
-  if (event.deltaY < 0) {
-    camera.move(0, camera.y - 20)
-    updateAll()
-    redrawAll()
-  }
-  else if (event.deltaY > 0) {
-    camera.move(0, camera.y + 20)
-    updateAll()
-    redrawAll()
-  }
-}, {passive: true})
+// window.addEventListener('wheel', (event) => {
+//   if (event.deltaY < 0) {
+//     camera.move(0, camera.y - 20)
+//     updateAll()
+//     // redrawAll()
+//   }
+//   else if (event.deltaY > 0) {
+//     camera.move(0, camera.y + 20)
+//     updateAll()
+//     // redrawAll()
+//   }
+// }, {passive: true})
+
+// window.addEventListener('keydown', (event) => {
+//   if (event.code === "ArrowUp") {
+//     camera.move(0, camera.y - 40)
+//     updateAll()
+//     // redrawAll()
+//   }else if (event.code === "ArrowDown") {
+//     camera.move(0, camera.y + 40)
+//     updateAll()
+//     // redrawAll()
+//   }
+// }, {passive: true})
 
 window.addEventListener('keydown', (event) => {
-  if (event.code === "ArrowUp") {
-    camera.move(0, camera.y - 40)
-    updateAll()
-    redrawAll()
-  }else if (event.code === "ArrowDown") {
-    camera.move(0, camera.y + 40)
-    updateAll()
-    redrawAll()
-  }
+  eventsManager.getInstance().onEvent('keydown', event);
 }, {passive: true})
 
+window.addEventListener('wheel', (event) => {
+  eventsManager.getInstance().onEvent('wheel', event);
+}, {passive: true})
+
+// window.addEventListener('resize', (event) => {
+//   // console.dir(event)
+//   let w = event.target.window.innerWidth;
+//   let h = event.target.window.innerHeight;
+//   canvas.width = w - 5;
+//   canvas.height = h - 5;
+//   const camera = cameraSingleton.getInstance().updateSize(w, h)
+//   updateAll()
+//   redrawAll()
+// }, {passive: true})
+
 window.addEventListener('resize', () => {
-  canvas.width = window.innerWidth - 5;
-  canvas.height = window.innerHeight - 5;
-  const camera = cameraSingleton.getInstance().updateSize(window.innerWidth, window.innerHeight)
+  // console.dir(event)
+  let w = window.innerWidth;
+  let h = window.innerHeight;
+  eventsManager.getInstance().onEvent('resize', {w, h});
   updateAll()
   redrawAll()
 }, {passive: true})

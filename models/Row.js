@@ -29,7 +29,7 @@ class Row {
     this.y = y;
     this.size = [0.05, 0.45, 0.07, 0.09]; //Sizes: Position, Name, Score, accumulatedPenalty
     this.marginY = marginY;
-    this.c = canvasSingleton.getInstance().getContext('2d');
+    this.c = canvasSingleton.getInstance().getContext();
     this.w = this.scoreboard.rowWidth;
     this.h = this.scoreboard.rowHeight;
     this.n = this.scoreboard.qtdProblems + 1;
