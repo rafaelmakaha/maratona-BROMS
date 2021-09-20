@@ -44,10 +44,8 @@ class Camera {
                 this.move(0, this.y + 20)
             }
         }else if(eventType === 'resize'){
-            // let w = event.target.innerWidth;
-            // let h = event.target.innerHeight;
-            console.log("EVENTO Do CAMERA " + event.w + " " + event.h)
-            this.updateSize(event.w, event.h);
+            // this.updateSize(event.w, event.h);
+            this.updateSize(event.target.innerWidth, event.target.innerHeight);
         }
         updateAll()
         redrawAll()

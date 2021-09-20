@@ -45,7 +45,7 @@ class Text {
           left: [offset + diff,(height - text_h)/2, offset],
           right: [width - text_w - offset < 0 ? width - text_w : width - text_w - offset, (height - text_h)/2, offset],
         }
-        // if (text_w > width - diff) return this.align(value, type, width, height, {...font, size: font.size - 1})
+        if (text_w > width - diff) return this.align(value, type, width, height, {...font, size: font.size - 1})
         return ans[type]
     }
 

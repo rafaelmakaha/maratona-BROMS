@@ -4,28 +4,40 @@ import eventsManager from './EventsManager.js';
 
 class Canvas {
     constructor(){      
-        var canvas = document.getElementById('canvas');
-        canvas.style.border = `0px solid ${COLORS.canvasBorder}`;
-        canvas.style.margin = 0;
+        this.canvas = document.getElementById('canvas');
+        this.canvas.style.border = `0px solid ${COLORS.canvasBorder}`;
+        this.canvas.style.margin = 0;
 
         let manager = eventsManager.getInstance();
         manager.registerListener('resize', this)
     }
     onEvent(eventType, event){
-        var canvas = document.getElementById('canvas');
+        this.canvas = document.getElementById('canvas');
+        console.dir(event)
         if(eventType === 'resize'){
             // let w = event.target.innerWidth;
             // let h = event.target.innerHeight;
-            console.log("EVENTO Do CANVAS " + event.w + " " + event.h)
-            canvas.width = event.w;
-            canvas.height = event.h;
+            this.canvas.width = event.target.innerWidth - 5;
+            this.canvas.height = event.target.innerHeight - 5;
         }
         updateAll()
         redrawAll()
     }
     getContext(){
-        var canvas = document.getElementById('canvas');
-        return canvas.getContext('2d')
+        this.canvas = document.getElementById('canvas');
+        return this.canvas.getContext('2d')
+    }
+    setSize(w, h){
+        this.canvas.width = w;
+        this.canvas.height = h;
+    }
+    getWidth(){
+        this.canvas = document.getElementById('canvas');
+        return this.canvas.width;
+    }
+    getHeight(){
+        this.canvas = document.getElementById('canvas');
+        return this.canvas.height;
     }
 }
 

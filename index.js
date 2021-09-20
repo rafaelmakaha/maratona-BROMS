@@ -11,14 +11,17 @@ body[0].style.margin = 0;
 body[0].style.backgroundColor = COLORS.bodyBackground;
 
 let canvas = canvasSingleton.getInstance()
-canvas.width = window.innerWidth - 5;
-canvas.height = window.innerHeight - 5;
+// canvas.width = window.innerWidth - 5;
+// canvas.height = window.innerHeight - 5;
+canvas.setSize(window.innerWidth - 5, window.innerHeight - 5)
 loadFont("nk57-monospace")
 
 const FILE_SEPARATOR = String.fromCharCode(28);
 
 const camera = cameraSingleton.getInstance();
 let scoreboard;
+
+eventsManager.getInstance()
 
 const main = async () => {
   const rawData = await getContest();
@@ -71,7 +74,7 @@ export const updateAll = () => {
 
 export const redrawAll = () => {
   canvas = canvasSingleton.getInstance();
-  canvas.getContext().clearRect(0, 0, canvas.width, canvas.height)
+  canvas.getContext().clearRect(0, 0, canvas.getWidth(), canvas.getHeight())
   scoreboard.draw()
 }
 
@@ -119,11 +122,21 @@ window.addEventListener('wheel', (event) => {
 //   redrawAll()
 // }, {passive: true})
 
-window.addEventListener('resize', () => {
+// window.addEventListener('resize', () => {
+//   // canvas = canvasSingleton.getInstance();
+//   // canvas.width = window.innerWidth - 5;
+//   // canvas.height = window.innerHeight - 5;
+//   canvas.setSize(window.innerWidth - 5, window.innerHeight - 5)
+//   const camera = cameraSingleton.getInstance().updateSize(window.innerWidth, window.innerHeight)
+//   updateAll()
+//   redrawAll()
+// }, {passive: true})
+
+window.addEventListener('resize', (event) => {
   // console.dir(event)
-  let w = window.innerWidth;
-  let h = window.innerHeight;
-  eventsManager.getInstance().onEvent('resize', {w, h});
+  // let w = window.innerWidth;
+  // let h = window.innerHeight;
+  eventsManager.getInstance().onEvent('resize', event);
   updateAll()
   redrawAll()
 }, {passive: true})

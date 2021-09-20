@@ -16,7 +16,7 @@ class Scoreboard {
     this.marginX = 5;
     this.marginY = 5;
     this.rowHeight = 40 + 2 * this.marginY;
-    this.rowWidth = 0.95 * canvasSingleton.getInstance().width;
+    this.rowWidth = 0.95 * canvasSingleton.getInstance().getWidth();
     this.x = 20;
     this.y = 50;
     this.initHeader()
@@ -26,13 +26,13 @@ class Scoreboard {
   }
   update() {
     this.rowHeight = 40 + 2 * this.marginY; 
-    this.rowWidth = 0.95 * canvasSingleton.getInstance().width; 
+    this.rowWidth = 0.95 * canvasSingleton.getInstance().getWidth();
     this.rows.map((row) => row.update())
   }
   draw() {
     const canvas = canvasSingleton.getInstance();
     const c = canvasSingleton.getInstance().getContext();
-    this.rowWidth = 0.95 * canvas.width;
+    this.rowWidth = 0.95 * canvas.getWidth();
     this.rows.map((row) => row.draw())
   }
   addRow({teamId, college, name}) {
