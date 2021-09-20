@@ -44,10 +44,7 @@ const main = async () => {
   updateAll();
   scoreboard.draw()
   runs.map((run,i) => {
-    // setTimeout(() => {
       scoreboard.processRun(run)
-    // }, 10*i);
-    // redrawAll();
   });
   updateAll();
   redrawAll();
@@ -59,13 +56,15 @@ const main = async () => {
     console.log('passei')
     runs = newRuns
     runs.map((run,i) => {
-      // setTimeout(() => {
         scoreboard.processRun(run)
         updateAll();
-        redrawAll();
-      // }, 10*i);
     })
   }, 1000);
+
+  setInterval(async () => {
+    updateAll();
+    redrawAll();
+  }, 40);
 }
 
 export const updateAll = () => {
@@ -78,31 +77,6 @@ export const redrawAll = () => {
   scoreboard.draw()
 }
 
-// window.addEventListener('wheel', (event) => {
-//   if (event.deltaY < 0) {
-//     camera.move(0, camera.y - 20)
-//     updateAll()
-//     // redrawAll()
-//   }
-//   else if (event.deltaY > 0) {
-//     camera.move(0, camera.y + 20)
-//     updateAll()
-//     // redrawAll()
-//   }
-// }, {passive: true})
-
-// window.addEventListener('keydown', (event) => {
-//   if (event.code === "ArrowUp") {
-//     camera.move(0, camera.y - 40)
-//     updateAll()
-//     // redrawAll()
-//   }else if (event.code === "ArrowDown") {
-//     camera.move(0, camera.y + 40)
-//     updateAll()
-//     // redrawAll()
-//   }
-// }, {passive: true})
-
 window.addEventListener('keydown', (event) => {
   eventsManager.getInstance().onEvent('keydown', event);
 }, {passive: true})
@@ -111,34 +85,8 @@ window.addEventListener('wheel', (event) => {
   eventsManager.getInstance().onEvent('wheel', event);
 }, {passive: true})
 
-// window.addEventListener('resize', (event) => {
-//   // console.dir(event)
-//   let w = event.target.window.innerWidth;
-//   let h = event.target.window.innerHeight;
-//   canvas.width = w - 5;
-//   canvas.height = h - 5;
-//   const camera = cameraSingleton.getInstance().updateSize(w, h)
-//   updateAll()
-//   redrawAll()
-// }, {passive: true})
-
-// window.addEventListener('resize', () => {
-//   // canvas = canvasSingleton.getInstance();
-//   // canvas.width = window.innerWidth - 5;
-//   // canvas.height = window.innerHeight - 5;
-//   canvas.setSize(window.innerWidth - 5, window.innerHeight - 5)
-//   const camera = cameraSingleton.getInstance().updateSize(window.innerWidth, window.innerHeight)
-//   updateAll()
-//   redrawAll()
-// }, {passive: true})
-
 window.addEventListener('resize', (event) => {
-  // console.dir(event)
-  // let w = window.innerWidth;
-  // let h = window.innerHeight;
   eventsManager.getInstance().onEvent('resize', event);
-  updateAll()
-  redrawAll()
 }, {passive: true})
 
 main()

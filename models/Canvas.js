@@ -1,4 +1,3 @@
-import { redrawAll, updateAll } from "../index.js";
 import { COLORS } from "../settings/colors.js";
 import eventsManager from './EventsManager.js';
 
@@ -13,15 +12,10 @@ class Canvas {
     }
     onEvent(eventType, event){
         this.canvas = document.getElementById('canvas');
-        console.dir(event)
         if(eventType === 'resize'){
-            // let w = event.target.innerWidth;
-            // let h = event.target.innerHeight;
             this.canvas.width = event.target.innerWidth - 5;
             this.canvas.height = event.target.innerHeight - 5;
         }
-        updateAll()
-        redrawAll()
     }
     getContext(){
         this.canvas = document.getElementById('canvas');

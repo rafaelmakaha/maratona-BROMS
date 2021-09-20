@@ -1,4 +1,3 @@
-import {updateAll, redrawAll} from '../index.js'
 import eventsManager from './EventsManager.js';
 
 class Camera {
@@ -32,23 +31,20 @@ class Camera {
     onEvent(eventType, event){
         if(eventType === 'keydown'){
             if (event.code === "ArrowUp") {
-                this.move(0, this.y - 40)
+                this.move(0, this.y - 50)
             }else if (event.code === "ArrowDown") {
-                this.move(0, this.y + 40)
+                this.move(0, this.y + 50)
             }
         }else if(eventType === 'wheel'){
             if (event.deltaY < 0) {
-                this.move(0, this.y - 20)
+                this.move(0, this.y - 25)
             }
             else if (event.deltaY > 0) {
-                this.move(0, this.y + 20)
+                this.move(0, this.y + 25)
             }
         }else if(eventType === 'resize'){
-            // this.updateSize(event.w, event.h);
             this.updateSize(event.target.innerWidth, event.target.innerHeight);
         }
-        updateAll()
-        redrawAll()
     }
 }
 
