@@ -21,7 +21,7 @@ class Parallelogram {
     }
 
     draw(){
-        const ctx = canvasSingleton.getInstance().getContext("2d");
+        const ctx = canvasSingleton.getInstance().getContext();
         const ang = CONSTANTS.ang
         ctx.beginPath()
         

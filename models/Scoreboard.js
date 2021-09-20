@@ -16,7 +16,7 @@ class Scoreboard {
     this.marginX = 5;
     this.marginY = 5;
     this.rowHeight = 40 + 2 * this.marginY;
-    this.rowWidth = 0.95 * canvas.width;
+    this.rowWidth = 0.95 * canvasSingleton.getInstance().getWidth();
     this.x = 20;
     this.y = 50;
     this.initHeader()
@@ -25,19 +25,20 @@ class Scoreboard {
     this.rows.push(new Row(this, NaN, ['', '', this.eventTitle], this.x, this.y, true, this.marginY))
   }
   update() {
+    this.rowHeight = 40 + 2 * this.marginY; 
+    this.rowWidth = 0.95 * canvasSingleton.getInstance().getWidth();
+    this.camera.update((this.totalRows + 1) * this.rowHeight + 4); 
     this.rows.map((row) => row.update())
   }
   draw() {
-    const canvas = canvasSingleton.getInstance();
-    const c = canvasSingleton.getInstance().getContext('2d');
-    this.rowWidth = 0.95 * canvas.width;
+    // this.rowWidth = 0.95 * canvasSingleton.getInstance().getWidth();
     this.rows.map((row) => row.draw())
   }
   addRow({teamId, college, name}) {
     this.totalRows++;
     this.rows.push(new Row(this, this.totalRows, [teamId, college, name ], this.x, this.y + (this.totalRows * this.rowHeight), false, this.marginY));
     this.rows[this.totalRows].parallelogs[ROW_FIELDS.POSITION].setText(this.totalRows);
-    this.camera.update((this.totalRows + 1) * this.rowHeight + 1); 
+    this.camera.update((this.totalRows + 1) * this.rowHeight + 4); 
   }
   notify(position) { }
   processRun({runId, time, teamUid, problem, verdict}) {
