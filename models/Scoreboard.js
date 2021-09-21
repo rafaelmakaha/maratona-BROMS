@@ -1,6 +1,7 @@
 import Row, { ROW_FIELDS } from './Row.js'
 import cameraSingleton from './Camera.js'
 import canvasSingleton from './Canvas.js'
+import eventsManager from './EventsManager.js';
 
 class Scoreboard {
   constructor(eventTitle, { duration, frozen, blind, penalty }, qtdProblems, font = "") {
@@ -20,15 +21,25 @@ class Scoreboard {
     this.x = 20;
     this.y = 50;
     this.initHeader()
+
+    let manager = eventsManager.getInstance();
+    manager.registerListener('canvasResize', this)
+    manager.notify('scoreboardResize', this)
   }
   initHeader() {
     this.rows.push(new Row(this, NaN, ['', '', this.eventTitle], this.x, this.y, true, this.marginY))
   }
+  onEvent(eventType, event) {
+    if(eventType === 'canvasResize') {
+      this.rowWidth = 0.95 * event.w;
+      // this.rows.map((row) => row.update())
+
+      let manager = eventsManager.getInstance();
+      manager.notify('scoreboardResize', this)
+    }
+  }
   update() {
-    this.rowHeight = 40 + 2 * this.marginY; 
-    this.rowWidth = 0.95 * canvasSingleton.getInstance().getWidth();
-    this.camera.update((this.totalRows + 1) * this.rowHeight + 4); 
-    this.rows.map((row) => row.update())
+    // this.rows.map((row) => row.update())
   }
   draw() {
     // this.rowWidth = 0.95 * canvasSingleton.getInstance().getWidth();
@@ -38,7 +49,8 @@ class Scoreboard {
     this.totalRows++;
     this.rows.push(new Row(this, this.totalRows, [teamId, college, name ], this.x, this.y + (this.totalRows * this.rowHeight), false, this.marginY));
     this.rows[this.totalRows].parallelogs[ROW_FIELDS.POSITION].setText(this.totalRows);
-    this.camera.update((this.totalRows + 1) * this.rowHeight + 4); 
+    let manager = eventsManager.getInstance();
+    manager.notify('scoreboardResize', this)
   }
   notify(position) { }
   processRun({runId, time, teamUid, problem, verdict}) {
@@ -57,6 +69,8 @@ class Scoreboard {
       this.rows[i].failed(questionNumber);
     }
     this.updatePosition(i);
+    let manager = eventsManager.getInstance();
+    manager.notify('scoreboardResize', this)
   }
   updatePosition(index) {
     let i = index - 1;

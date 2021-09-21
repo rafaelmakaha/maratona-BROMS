@@ -41,35 +41,26 @@ const main = async () => {
     scoreboard.addRow(team)
   });
 
-  updateAll();
   scoreboard.draw()
   runs.map((run,i) => {
       scoreboard.processRun(run)
   });
-  updateAll();
   redrawAll();
   var refresh = setInterval(async () => {
-    console.log(await getContestEnd())
     if(await getContestEnd()) clearInterval(refresh)
     let newRuns = await getNewRuns(runs[runs.length - 1]["runId"])
     if(!newRuns.length) return
-    console.log('passei')
     runs = newRuns
     runs.map((run,i) => {
         scoreboard.processRun(run)
-        updateAll();
     })
   }, 1000);
 
   setInterval(async () => {
-    updateAll();
     redrawAll();
   }, 40);
 }
 
-export const updateAll = () => {
-  scoreboard.update()
-}
 
 export const redrawAll = () => {
   canvas = canvasSingleton.getInstance();

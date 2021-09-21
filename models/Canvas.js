@@ -15,6 +15,9 @@ class Canvas {
         if(eventType === 'resize'){
             this.canvas.width = event.target.innerWidth - 5;
             this.canvas.height = event.target.innerHeight - 5;
+
+            let manager = eventsManager.getInstance();
+            manager.notify('canvasResize', { w: this.canvas.width, h: this.canvas.height })
         }
     }
     getContext(){

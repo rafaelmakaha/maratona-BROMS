@@ -4,6 +4,7 @@ import { COLORS } from '../settings/colors.js';
 import Parallelogram from './Parallelogram.js';
 import PositionParallelogram from './PositionParallelogram.js';
 import Text from './Text.js';
+import eventsManager from './EventsManager.js';
 
 export const ROW_FIELDS = {
   POSITION: 0,
@@ -36,6 +37,10 @@ class Row {
     this.parallelogs = new Array();
 
     this.buildParallelogs();
+
+    let manager = eventsManager.getInstance();
+    manager.registerListener('scoreboardResize', this)
+    manager.registerListener('cameraMovement', this)
   }
 
   buildParallelogs() {
@@ -67,9 +72,6 @@ class Row {
     this.acs[questionNumber] = 1;
     this.score += 1;
     this.lastAc = time;
-    if(this.uid == 'teambrbr44'){
-      console.log(questionNumber, 'Erros: ' + this.submissions[questionNumber], 'tempo ' + time, this.accumulatedPenalty);
-    }
     this.accumulatedPenalty += time + (this.scoreboard.penalty * this.submissions[questionNumber]);
   }
 
@@ -77,11 +79,13 @@ class Row {
     this.submissions[questionNumber] += 1;
   }
 
-  update(){
+  onEvent(eventType, event){
     // this.c = canvasSingleton.getInstance().getContext('2d');
     this.w = this.scoreboard.rowWidth;
     this.h = this.scoreboard.rowHeight;
     this.n = this.scoreboard.qtdProblems+1;
+
+    this.camera = cameraSingleton.getInstance()
 
     let x = this.x - this.camera.x
     let y = this.y - this.camera.y

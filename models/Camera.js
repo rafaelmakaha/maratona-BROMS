@@ -15,15 +15,16 @@ class Camera {
         manager.registerListener('keydown', this)
         manager.registerListener('wheel', this)
         manager.registerListener('resize', this)
+        manager.registerListener('scoreboardResize', this)
     }
     move(x, y){
         this.x = Math.min(this.xMax,Math.max(x, this.xMin));
         this.y = Math.min(this.yMax,Math.max(y, this.yMin));
     }
-    update(scoreH){
+    setYMax(scoreH){
         this.yMax = Math.max(0, scoreH - this.h)
     }
-    updateSize(w,h){
+    resize(w,h){
         this.w = w;
         this.h = h;
     }
@@ -35,6 +36,8 @@ class Camera {
             }else if (event.code === "ArrowDown") {
                 this.move(0, this.y + 50)
             }
+            let manager = eventsManager.getInstance();
+            manager.notify('cameraMovement', this)
         }else if(eventType === 'wheel'){
             if (event.deltaY < 0) {
                 this.move(0, this.y - 25)
@@ -42,8 +45,12 @@ class Camera {
             else if (event.deltaY > 0) {
                 this.move(0, this.y + 25)
             }
+            let manager = eventsManager.getInstance();
+            manager.notify('cameraMovement', this)
         }else if(eventType === 'resize'){
-            this.updateSize(event.target.innerWidth, event.target.innerHeight);
+            this.resize(event.target.innerWidth, event.target.innerHeight);
+        }else if(eventType === 'scoreboardResize'){
+            this.setYMax((event.totalRows + 1) * event.rowHeight + 4);
         }
     }
 }

@@ -18,6 +18,10 @@ class EventsManager {
     onEvent(eventType, event){
         this.events[eventType].map(listener => listener.onEvent(eventType, event))
     }
+
+    notify(eventType, event) {
+        this.onEvent(eventType, event)
+    }
 }
 
 let eventsManager = (function () {
