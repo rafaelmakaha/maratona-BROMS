@@ -54,13 +54,17 @@ const main = async () => {
     runs.map((run,i) => {
         scoreboard.processRun(run)
     })
-  }, 1000);
+  }, 5000);
 
   setInterval(async () => {
+    updateAll();
     redrawAll();
-  }, 40);
+  }, 33); // 1000/33 => 30fps
 }
 
+export const updateAll = () => {
+  scoreboard.update()
+}
 
 export const redrawAll = () => {
   canvas = canvasSingleton.getInstance();

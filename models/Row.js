@@ -28,11 +28,14 @@ class Row {
     this.submissions = new Array(this.scoreboard.qtdProblems+1).fill(0);
     this.x = x;
     this.y = y;
+    // this.nextX = x;
+    this.nextY = y;
     this.size = [0.05, 0.45, 0.07, 0.09]; //Sizes: Position, Name, Score, accumulatedPenalty
     this.marginY = marginY;
     this.c = canvasSingleton.getInstance().getContext();
     this.w = this.scoreboard.rowWidth;
     this.h = this.scoreboard.rowHeight;
+    this.ySpeed = 5;
     this.n = this.scoreboard.qtdProblems + 1;
     this.parallelogs = new Array();
 
@@ -81,6 +84,10 @@ class Row {
 
   onEvent(eventType, event){
     // this.c = canvasSingleton.getInstance().getContext('2d');
+    this.update()
+  }
+
+  update(){
     this.w = this.scoreboard.rowWidth;
     this.h = this.scoreboard.rowHeight;
     this.n = this.scoreboard.qtdProblems+1;
@@ -91,7 +98,7 @@ class Row {
     let y = this.y - this.camera.y
 
     this.parallelogs[0].update(x, y);
-    x = x + this.size[0] * this.w;
+    x += this.size[0] * this.w;
 
     this.parallelogs[1].update(x, y);
     this.parallelogs[1].text.update(this.teamName);
@@ -117,6 +124,29 @@ class Row {
       }
       x += problemWidth * this.w;
     }
+
+    this.a();
+  }
+
+  a(){
+    // debugger
+    // let speed = Math.ceil((this.nextY - this.y));
+    
+    // if(this.y != this.nextY){
+    //   this.y = speed;
+    // }
+    let diff=Math.abs(this.y - this.nextY)
+    let speed = diff/30;
+    if(speed < 0.01){
+      this.y = this.nextY
+    }
+
+    if(this.y > this.nextY){
+      this.y -= speed
+    }else if(this.y < this.nextY){
+      this.y += speed
+    }
+    
   }
 
   draw(){
@@ -130,7 +160,7 @@ class Row {
 
   updateCoords(x, y){
     this.x = x;
-    this.y = y;
+    this.nextY = y;
   }
 
 }
