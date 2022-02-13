@@ -5,6 +5,7 @@ import {loadFont} from './utils/loadFont.js';
 import canvasSingleton from './models/Canvas.js'
 import { COLORS } from './settings/colors.js';
 import eventsManager from './models/EventsManager.js';
+import ScoreboardFirsts from './models/ScoreboardFirsts.js';
 
 const body = document.getElementsByTagName('body')
 body[0].style.margin = 0;
@@ -18,8 +19,19 @@ loadFont("nk57-monospace")
 
 const FILE_SEPARATOR = String.fromCharCode(28);
 
+const VIEWS = {
+  DEFAULT: 'default',
+  FIRST_HITS: 'firstHits',
+}
+
+const KEYS = {
+  FIRST_HITS: 'KeyF',
+  DEFAULT: 'Escape',
+}
+
 const camera = cameraSingleton.getInstance();
-let scoreboard;
+let scoreboards;
+let currentView = VIEWS.DEFAULT;
 
 eventsManager.getInstance()
 
@@ -34,16 +46,34 @@ const main = async () => {
   } = rawData
 
   // Instatiate Scoreboard
-  scoreboard = new Scoreboard(eventTitle, {duration, frozen, blind, penalty}, qtdProblems)
+  scoreboards = {
+    default: new Scoreboard(
+      eventTitle, 
+      {duration, frozen, blind, penalty}, 
+      qtdProblems
+      // O que ja tem
+    ), 
+    firstHits: new ScoreboardFirsts(
+      eventTitle, 
+      {duration, frozen, blind, penalty}, 
+      qtdProblems,
+      // 'Primeiro a acertar'
+    )
+  };
 
   // Instatiate teams
   teams.map((team, index) => {
-    scoreboard.addRow(team)
+    Object.keys(scoreboards).forEach((key) => {
+      scoreboards[key].addRow(team)
+    })
   });
 
-  scoreboard.draw()
+  // scoreboard.draw()
   runs.map((run,i) => {
-      scoreboard.processRun(run)
+      // scoreboard.processRun(run)
+      Object.keys(scoreboards).forEach((key) => {
+        scoreboards[key].processRun(run)
+      })
   });
   redrawAll();
   var refresh = setInterval(async () => {
@@ -52,7 +82,10 @@ const main = async () => {
     if(!newRuns.length) return
     runs = newRuns
     runs.map((run,i) => {
-        scoreboard.processRun(run)
+      // scoreboard.processRun(run)
+      Object.keys(scoreboards).forEach((key) => {
+        scoreboards[key].processRun(run)
+      })
     })
   }, 1000);
 
@@ -65,11 +98,19 @@ const main = async () => {
 export const redrawAll = () => {
   canvas = canvasSingleton.getInstance();
   canvas.getContext().clearRect(0, 0, canvas.getWidth(), canvas.getHeight())
-  scoreboard.draw()
+  scoreboards[currentView].draw()
 }
 
 window.addEventListener('keydown', (event) => {
   eventsManager.getInstance().onEvent('keydown', event);
+  switch (event.code){
+    case KEYS.DEFAULT:
+      currentView = VIEWS.DEFAULT;
+      break;
+    case KEYS.FIRST_HITS:
+      currentView = VIEWS.FIRST_HITS;
+      break;
+  }
 }, {passive: true})
 
 window.addEventListener('wheel', (event) => {
