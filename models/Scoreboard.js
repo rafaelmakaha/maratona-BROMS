@@ -21,6 +21,7 @@ class Scoreboard {
     this.x = 20;
     this.y = 50;
     this.initHeader()
+    this.firstHits = {};
 
     let manager = eventsManager.getInstance();
     manager.registerListener('canvasResize', this)
@@ -62,15 +63,21 @@ class Scoreboard {
     const questionNumber = problem.charCodeAt(0) - 64;
 
     if (this.rows[i].acs[questionNumber] !== 0) return
-
+    // descobre que é primeiro acerto
+    
     if (verdict.charCodeAt(0) === "Y".charCodeAt(0)) {
-      this.rows[i].accepted(questionNumber, time);
+      let first=false;
+      if(!this.firstHits[questionNumber]){
+        first=true;
+        this.firstHits[questionNumber] = i+1;
+      }
+      this.rows[i].accepted(questionNumber, time, first);
     } else {
       this.rows[i].failed(questionNumber);
     }
     this.updatePosition(i);
     let manager = eventsManager.getInstance();
-    manager.notify('scoreboardResize', this)
+    manager.notify('processRun', this)
   }
   updatePosition(index) {
     let i = index - 1;

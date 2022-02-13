@@ -13,6 +13,12 @@ export const ROW_FIELDS = {
   PENALTY: 3,
 }
 
+export const ACS_COLORS = {
+	'0': 'red',
+	'1': 'green',
+	'2': 'blue',
+}
+
 class Row {
   constructor(scoreboard, position, [uid, college, teamName], x, y, header=false, marginY=0) {
     this.header = header;
@@ -40,6 +46,7 @@ class Row {
 
     let manager = eventsManager.getInstance();
     manager.registerListener('scoreboardResize', this)
+		manager.registerListener('processRun', this)
     manager.registerListener('cameraMovement', this)
   }
 
@@ -68,8 +75,8 @@ class Row {
     this.parallelogs[ROW_FIELDS.POSITION].setText(String(rank))
   }
 
-  accepted(questionNumber, time){
-    this.acs[questionNumber] = 1;
+  accepted(questionNumber, time, firstHit=false){
+    this.acs[questionNumber] = firstHit ? 2 : 1;
     this.score += 1;
     this.lastAc = time;
     this.accumulatedPenalty += time + (this.scoreboard.penalty * this.submissions[questionNumber]);
@@ -113,7 +120,8 @@ class Row {
         this.parallelogs[i + 3].update(x, y)
         this.parallelogs[i + 3].text.update(this.acs[i])
       } else {
-        this.parallelogs[i + 3].update(x, y, {fillColor:this.acs[i] ? "green" : "red"})
+        // this.parallelogs[i + 3].update(x, y, {fillColor:this.acs[i] ? "green" : "red"})
+        this.parallelogs[i + 3].update(x, y, {fillColor: ACS_COLORS[this.acs[i]]})
       }
       x += problemWidth * this.w;
     }
