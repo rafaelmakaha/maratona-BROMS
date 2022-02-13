@@ -68,12 +68,10 @@ const main = async () => {
     })
   });
 
-  // scoreboard.draw()
   runs.map((run,i) => {
-      // scoreboard.processRun(run)
-      Object.keys(scoreboards).forEach((key) => {
-        scoreboards[key].processRun(run)
-      })
+    Object.keys(scoreboards).forEach((key) => {
+      scoreboards[key].processRun(run)
+    })
   });
   redrawAll();
   var refresh = setInterval(async () => {
@@ -82,7 +80,6 @@ const main = async () => {
     if(!newRuns.length) return
     runs = newRuns
     runs.map((run,i) => {
-      // scoreboard.processRun(run)
       Object.keys(scoreboards).forEach((key) => {
         scoreboards[key].processRun(run)
       })
@@ -101,9 +98,8 @@ export const redrawAll = () => {
   scoreboards[currentView].draw()
 }
 
-window.addEventListener('keydown', (event) => {
-  eventsManager.getInstance().onEvent('keydown', event);
-  switch (event.code){
+function switchView(code){
+  switch (code){
     case KEYS.DEFAULT:
       currentView = VIEWS.DEFAULT;
       break;
@@ -111,6 +107,11 @@ window.addEventListener('keydown', (event) => {
       currentView = VIEWS.FIRST_HITS;
       break;
   }
+}
+
+window.addEventListener('keydown', (event) => {
+  eventsManager.getInstance().onEvent('keydown', event);
+  switchView(event.code);
 }, {passive: true})
 
 window.addEventListener('wheel', (event) => {
