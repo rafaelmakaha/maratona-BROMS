@@ -125,16 +125,10 @@ class Row {
       x += problemWidth * this.w;
     }
 
-    this.a();
+    this.animateByPositions();
   }
 
-  a(){
-    // debugger
-    // let speed = Math.ceil((this.nextY - this.y));
-    
-    // if(this.y != this.nextY){
-    //   this.y = speed;
-    // }
+  animateByPositions(){
     let diff=Math.abs(this.y - this.nextY)
     let speed = diff/30;
     if(speed < 0.01){
