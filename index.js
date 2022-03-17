@@ -24,20 +24,15 @@ let scoreboard;
 eventsManager.getInstance()
 
 const main = async () => {
-  const rawData = await getContest();
-  let runs = await getRuns()
-  const {
-    name: eventTitle,
-    duration, frozen, blind, penalty,
-    n_questions: qtdProblems,
-    teams
-  } = rawData
+  const contest = await getContest();
+  
+  let runs = (await getRuns()).filter(r => r.time <= contest.duration/60);
 
   // Instatiate Scoreboard
-  scoreboard = new Scoreboard(eventTitle, {duration, frozen, blind, penalty}, qtdProblems)
+  scoreboard = new Scoreboard(contest.eventTitle, contest.duration, contest.frozen, contest.blind, contest.penalty, contest.qtdProblems)
 
   // Instatiate teams
-  teams.map((team, index) => {
+  contest.teams.map((team, _) => {
     scoreboard.addRow(team)
   });
 
@@ -48,13 +43,13 @@ const main = async () => {
   redrawAll();
   var refresh = setInterval(async () => {
     if(await getContestEnd()) clearInterval(refresh)
-    let newRuns = await getNewRuns(runs[runs.length - 1]["runId"])
+    let newRuns = !runs.length ? await getRuns() : (await getNewRuns(runs[runs.length - 1]["runId"])).filter(r => r.time <= contest.duration / 60) ?? [];
     if(!newRuns.length) return
     runs = newRuns
     runs.map((run,i) => {
         scoreboard.processRun(run)
     })
-  }, 1000);
+  }, 10000);
 
   setInterval(async () => {
     redrawAll();
