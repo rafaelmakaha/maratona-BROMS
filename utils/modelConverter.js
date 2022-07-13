@@ -1,10 +1,12 @@
+import { FROZEN, BLIND, PENALTY } from '../appSettings.js';
+
 export const toContestModel = (model) => {
     return {
         eventTitle: model.contest.name,
-        duration: model.contest.durationSeconds,
-        frozen: model.contest.frozen,
-        blind: false,
-        penalty: 20,
+        duration: Math.trunc(model.contest.durationSeconds / 60),
+        frozen: model.contest.durationSeconds - FROZEN,
+        blind: model.contest.durationSeconds - BLIND,
+        penalty: PENALTY,
         qtdProblems: model.problems.length,
         teams: toTeamModel(model.rows)
     }

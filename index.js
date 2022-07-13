@@ -5,6 +5,7 @@ import {loadFont} from './utils/loadFont.js';
 import canvasSingleton from './models/Canvas.js'
 import { COLORS } from './settings/colors.js';
 import eventsManager from './models/EventsManager.js';
+import { MODE } from './appSettings.js';
 
 const body = document.getElementsByTagName('body')
 body[0].style.margin = 0;
@@ -24,9 +25,10 @@ let scoreboard;
 eventsManager.getInstance()
 
 const main = async () => {
-  const contest = await getContest();
+  let contest = await getContest();
   
-  let runs = (await getRuns()).filter(r => r.time <= contest.duration/60);
+  let runs = (await getRuns()).filter(r => r.time < Math.trunc(contest.duration / 60));
+  // let runs = await getRuns();
 
   // Instatiate Scoreboard
   scoreboard = new Scoreboard(contest.eventTitle, contest.duration, contest.frozen, contest.blind, contest.penalty, contest.qtdProblems)
@@ -43,13 +45,21 @@ const main = async () => {
   redrawAll();
   var refresh = setInterval(async () => {
     if(await getContestEnd()) clearInterval(refresh)
-    let newRuns = !runs.length ? await getRuns() : (await getNewRuns(runs[runs.length - 1]["runId"])).filter(r => r.time <= contest.duration / 60) ?? [];
+    let newRuns = !runs.length ? await getRuns() : (await getNewRuns(runs[runs.length - 1]["runId"]));
+    newRuns = newRuns.filter(r => r.time < Math.trunc(contest.duration / 60));
     if(!newRuns.length) return
+    if (MODE === "CF") {
+      let newTeams = (await getContest()).teams.filter(nt => !contest.teams.find(t => t.teamId == nt.teamId))
+      newTeams.forEach((team, _) => {
+        scoreboard.addRow(team)
+      });
+      contest.teams = contest.teams.concat(newTeams);
+    }
     runs = newRuns
     runs.map((run,i) => {
         scoreboard.processRun(run)
     })
-  }, 10000);
+  }, 30000);
 
   setInterval(async () => {
     redrawAll();

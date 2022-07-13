@@ -3,7 +3,8 @@ import { toContestModel, toRunModel } from '../utils/modelConverter.js';
 
 export const getCFContest = () => {
   return new Promise((resolve, reject) => {
-    getApiUrl('standings').then(url => fetch(url))
+    getApiUrl('standings')
+    .then(url => fetch(url))
     .then(response => response.json())
     .then(responseJson => toContestModel(responseJson.result))
     .then(resolve)
