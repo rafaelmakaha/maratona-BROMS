@@ -36,7 +36,7 @@ export async function getNewRunsCF(runId, count) {
     let runsMap = new Map();
     let found = false;
     let i = 1;
-
+    
     while (!found) {
         let runs = await getCFRuns(count, i);
         runs.forEach(r => {
@@ -56,5 +56,5 @@ export async function getNewRunsCF(runId, count) {
         newRuns.push(value);
     }
 
-    return newRuns;
+    return newRuns.sort((a,b) => a.runId > b.runId ? 1 : -1);
 }

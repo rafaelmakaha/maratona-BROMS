@@ -26,9 +26,9 @@ eventsManager.getInstance()
 
 const main = async () => {
   let contest = await getContest();
-  
-  let runs = (await getRuns()).filter(r => r.time < Math.trunc(contest.duration / 60));
-  // let runs = await getRuns();
+
+  // let runs = (await getRuns()).filter(r => r.time < Math.trunc(contest.duration / 60));
+  let runs = await getRuns();
 
   // Instatiate Scoreboard
   scoreboard = new Scoreboard(contest.eventTitle, contest.duration, contest.frozen, contest.blind, contest.penalty, contest.qtdProblems)
@@ -46,7 +46,7 @@ const main = async () => {
   var refresh = setInterval(async () => {
     if(await getContestEnd()) clearInterval(refresh)
     let newRuns = !runs.length ? await getRuns() : (await getNewRuns(runs[runs.length - 1]["runId"]));
-    newRuns = newRuns.filter(r => r.time < Math.trunc(contest.duration / 60));
+    //newRuns = newRuns.filter(r => r.time < Math.trunc(contest.duration / 60));
     if(!newRuns.length) return
     if (MODE === "CF") {
       let newTeams = (await getContest()).teams.filter(nt => !contest.teams.find(t => t.teamId == nt.teamId))
