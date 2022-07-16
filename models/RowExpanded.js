@@ -1,53 +1,16 @@
-import cameraSingleton from './Camera.js';
-import canvasSingleton from './Canvas.js';
+import Row, { ACS_COLORS, ROW_FIELDS } from './Row.js'
 import { COLORS } from '../settings/colors.js';
 import Parallelogram from './Parallelogram.js';
 import PositionParallelogram from './PositionParallelogram.js';
 import Text from './Text.js';
-import eventsManager from './EventsManager.js';
+import cameraSingleton from './Camera.js';
 
-export const ROW_FIELDS = {
-  POSITION: 0,
-  TEAM: 1,
-  SCORE: 2,
-  PENALTY: 3,
-}
-
-export const ACS_COLORS = {
-	'0': 'red',
-	'1': 'green',
-	'2': 'blue',
-}
-
-class Row {
+class RowExpanded extends Row {
   constructor(scoreboard, position, [uid, college, teamName], x, y, header=false, marginY=0) {
-    this.header = header;
-    this.lastAc = 0;
-    this.camera = cameraSingleton.getInstance();
-    this.scoreboard = scoreboard;
-    this.uid = uid;
-    this.college = college;
-    this.teamName = header ? 'TEAM': teamName;
-    this.score = header ? 'SCORE' : 0;
-    this.accumulatedPenalty = header ? 'PENALTY' : 0;
-    this.acs = header ? ' ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').slice(0, this.scoreboard.qtdProblems+1) : new Array(this.scoreboard.qtdProblems+1).fill(0);
-    this.submissions = new Array(this.scoreboard.qtdProblems+1).fill(0);
-    this.x = x;
-    this.y = y;
-    this.size = [0.05, 0.45, 0.07, 0.09]; //Sizes: Position, Name, Score, accumulatedPenalty
-    this.marginY = marginY;
-    // this.c = canvasSingleton.getInstance().getContext();
-    this.w = this.scoreboard.rowWidth;
-    this.h = this.scoreboard.rowHeight;
-    this.n = this.scoreboard.qtdProblems + 1;
-    this.parallelogs = new Array();
-
-    this.buildParallelogs();
-
-    let manager = eventsManager.getInstance();
-    manager.registerListener('scoreboardResize', this)
-		manager.registerListener('processRun', this)
-    manager.registerListener('cameraMovement', this)
+    super(scoreboard, position, [uid, college, teamName], x, y, header, marginY)
+    this.h = this.scoreboard.rowHeight * 2;
+    this.n = this.scoreboard.qtdProblems + 1
+    this.acsTimes = new Array(this.scoreboard.qtdProblems+1).fill(0);
   }
 
   buildParallelogs() {
@@ -55,7 +18,10 @@ class Row {
     if(this.header){
       this.parallelogs[ROW_FIELDS.POSITION].setText('#');
     }
-    this.parallelogs.push(new Parallelogram(this, 0, this.y - this.marginY, this.size[1], this.h - 2*this.marginY, new Text(undefined, this.teamName, COLORS.mainTextColor, this.header ? 'center' : 'left')));
+    let fullText = this.teamName+'\n'+this.college
+    // if(this.college == 'USP') fullText+= '\n'+this.college;
+    // console.log("FULLTEXT", fullText)
+    this.parallelogs.push(new Parallelogram(this, 0, this.y - this.marginY, this.size[1], this.h - 2*this.marginY, new Text(undefined, fullText, COLORS.mainTextColor, this.header ? 'center' : 'left')));
     this.parallelogs.push(new Parallelogram(this, 0, this.y - this.marginY, this.size[2], this.h - 2*this.marginY, new Text(undefined, this.score)));
     this.parallelogs.push(new Parallelogram(this, 0, this.y - this.marginY, this.size[3], this.h - 2*this.marginY, new Text(undefined, this.accumulatedPenalty)));
 
@@ -66,30 +32,23 @@ class Row {
       if(this.header){
         this.parallelogs.push((new Parallelogram(this, 0, this.y - this.marginY, problemWidth, this.h - 2 * this.marginY, new Text(undefined, this.acs[i]))));
       } else {
-        this.parallelogs.push((new Parallelogram(this, 0, this.y - this.marginY, problemWidth, this.h - 2 * this.marginY, undefined, this.acs[i] ? "green" : "red")));
+        this.parallelogs.push((new Parallelogram(this, 0, this.y - this.marginY, problemWidth, this.h - 2 * this.marginY, new Text(undefined, ''), this.acs[i] ? "green" : "red")));
       }
     }
   }
 
-  setRank(rank){
-    this.parallelogs[ROW_FIELDS.POSITION].setText(String(rank))
-  }
-
   accepted(questionNumber, time, firstHit=false){
     this.acs[questionNumber] = firstHit ? 2 : 1;
+    this.acsTimes[questionNumber] = time;
     this.score += 1;
     this.lastAc = time;
     this.accumulatedPenalty += time + (this.scoreboard.penalty * this.submissions[questionNumber]);
   }
 
-  failed(questionNumber){
-    this.submissions[questionNumber] += 1;
-  }
-
   onEvent(eventType, event){
     // this.c = canvasSingleton.getInstance().getContext('2d');
     this.w = this.scoreboard.rowWidth;
-    this.h = this.scoreboard.rowHeight;
+    this.h = this.scoreboard.rowHeight * 2;
     this.n = this.scoreboard.qtdProblems+1;
 
     this.camera = cameraSingleton.getInstance()
@@ -101,7 +60,7 @@ class Row {
     x = x + this.size[0] * this.w;
 
     this.parallelogs[1].update(x, y);
-    // this.parallelogs[1].text.update(this.teamName);
+    // this.parallelogs[1].text.update(this.teamName+'\n'+this.college);
     x += this.size[1] * this.w;
 
 
@@ -121,26 +80,19 @@ class Row {
         this.parallelogs[i + 3].text.update(this.acs[i])
       } else {
         // this.parallelogs[i + 3].update(x, y, {fillColor:this.acs[i] ? "green" : "red"})
-        this.parallelogs[i + 3].update(x, y, {fillColor: ACS_COLORS[this.acs[i]]})
+        let txt = '' //
+        // this.submissions[i] ? '+'+this.submissions[i]+(this.acs[i] ? '\n('+this.acsTimes[i]+')' :'') : ''
+        if(!this.submissions[i] && this.acs[i]) txt=`+\n${this.acsTimes[i]}`
+        else if(this.submissions[i] && this.acs[i]) txt= `+${this.submissions[i]}\n${this.acsTimes[i]}`
+        else if(this.submissions[i]) txt= `+${this.submissions[i]}`
+        else txt=''
+          
+        this.parallelogs[i + 3].update(x, y, {fillColor: (this.submissions[i]||this.acs[i]) ? ACS_COLORS[this.acs[i]] : '#bebebe'})
+        this.parallelogs[i + 3].text.update(txt)
       }
       x += problemWidth * this.w;
     }
   }
-
-  draw(){
-    const a = Math.max(this.camera.y, this.y)
-    const b = Math.min(this.camera.y + this.camera.h, this.y + this.h)
-
-    if (b - a <= 0) return 
-
-    this.parallelogs.map((parallelog) => parallelog.draw())
-  }
-
-  updateCoords(x, y){
-    this.x = x;
-    this.y = y;
-  }
-
 }
 
-export default Row;
+export default RowExpanded;

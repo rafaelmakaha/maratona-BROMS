@@ -8,6 +8,13 @@ class ScoreboardFirsts extends Scoreboard {
   constructor(eventTitle, { duration, frozen, blind, penalty }, qtdProblems, font = "") {
     super(eventTitle, { duration, frozen, blind, penalty }, qtdProblems, font)
   }
+
+  draw() {
+    this.rows.forEach((row) => {
+      if(row.score) row.draw()
+    })
+  }
+
   processRun({runId, time, teamUid, problem, verdict}) {
     let i;
     for(i = 0; i < this.totalRows; i++){

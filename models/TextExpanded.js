@@ -3,7 +3,7 @@ import { CONSTANTS } from "../settings/constants.js";
 import { FONTS } from "../settings/fonts.js";
 import canvasSingleton from "./Canvas.js";
 
-class Text {
+class TextExpanded {
     constructor(Parent=undefined, value='', color=COLORS.mainTextColor, selfAlign='center', font=FONTS.default,  {x=0, y=0}={}) {
         this.Parent = Parent;
         this.value = value;
@@ -94,4 +94,4 @@ class Text {
     }
 }
 
-export default Text;
+export default TextExpanded;

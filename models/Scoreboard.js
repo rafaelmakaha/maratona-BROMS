@@ -46,7 +46,7 @@ class Scoreboard {
     // this.rowWidth = 0.95 * canvasSingleton.getInstance().getWidth();
     this.rows.map((row) => row.draw())
   }
-  addRow({teamId, college, name}) {
+  addRow({teamId, college, name, region=''}) {
     this.totalRows++;
     this.rows.push(new Row(this, this.totalRows, [teamId, college, name ], this.x, this.y + (this.totalRows * this.rowHeight), false, this.marginY));
     this.rows[this.totalRows].parallelogs[ROW_FIELDS.POSITION].setText(this.totalRows);
@@ -55,10 +55,15 @@ class Scoreboard {
   }
   notify(position) { }
   processRun({runId, time, teamUid, problem, verdict}) {
+    let found=false;
     let i;
     for(i = 0; i < this.totalRows; i++){
-      if(this.rows[i].uid === teamUid) break;
+      if(this.rows[i].uid === teamUid) {
+        found = true;
+        break;
+      }
     }
+    if(!found) return;
     
     const questionNumber = problem.charCodeAt(0) - 64;
 
