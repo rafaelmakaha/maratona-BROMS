@@ -5,8 +5,8 @@ import eventsManager from './EventsManager.js';
 import Scoreboard from './Scoreboard.js';
 
 class ScoreboardFirsts extends Scoreboard {
-  constructor(eventTitle, { duration, frozen, blind, penalty }, qtdProblems, font = "") {
-    super(eventTitle, { duration, frozen, blind, penalty }, qtdProblems, font)
+  constructor(eventTitle, duration, frozen, blind, penalty, qtdProblems, font = "") {
+    super(eventTitle, duration, frozen, blind, penalty, qtdProblems, font)
   }
 
   draw() {

@@ -1,49 +1,39 @@
-const FILE_SEPARATOR = String.fromCharCode(28);
-const baseUrl = 'http://localhost:8000'
+import { MODE } from '../appSettings.js';
+import { getMockContest, getMockContestEnd, getMockRuns, getMockNewRuns } from './mockApi.js';
+import { getCFContest, getCFContestEnd, getCFRuns, getCFNewRuns } from './cfApi.js';
 
 export const getContest = () => {
-  const url = `${baseUrl}/contest`;
-  return new Promise((resolve, reject) => {
-    fetch(url)
-    .then(response => response.json())
-    .then(resolve)
-    .catch(reject)
-  })
+  switch (MODE) {
+    case "MOCK":
+      return getMockContest();
+    case "CF":
+      return getCFContest();
+  }
 }
 
 export const getContestEnd = () => {
-  const url = `${baseUrl}/contest/finish`;
-  return new Promise((resolve, reject) => {
-    fetch(url)
-    .then(response => response.json())
-    .then(resolve)
-    .catch(reject)
-  })
+  switch (MODE) {
+    case "MOCK":
+      return getMockContestEnd();
+    case "CF":
+      return getCFContestEnd();
+  }
 }
 
 export const getRuns = () => {
-  const url = `${baseUrl}/runs`
-  return new Promise((resolve, reject) => {
-    fetch(url)
-    .then(response => response.json())
-    .then(resolve)
-    .catch(reject)
-  })
+  switch (MODE) {
+    case "MOCK":
+      return getMockRuns();
+    case "CF":
+      return getCFRuns();
+  }
 }
 
 export const getNewRuns = (runId) => {
-  const url = `${baseUrl}/runs/diff`;
-  const method = 'POST';
-  return new Promise((resolve, reject) => {
-    fetch(url, {
-      method,
-      headers: {
-        'Access-Control-Allow-Origin':'*'
-      },
-      body: JSON.stringify(runId)
-    })
-    .then(response => response.json())
-    .then(resolve)
-    .catch(reject)
-  })
+  switch (MODE) {
+    case "MOCK":
+      return getMockNewRuns(runId);
+    case "CF":
+      return getCFNewRuns(runId);
+  }
 }

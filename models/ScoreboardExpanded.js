@@ -6,8 +6,8 @@ import Scoreboard from './Scoreboard.js';
 import RowExpanded from './RowExpanded.js';
 
 class ScoreboardExpanded extends Scoreboard {
-  constructor(eventTitle, { duration, frozen, blind, penalty }, qtdProblems, font = "") {
-    super(eventTitle, { duration, frozen, blind, penalty }, qtdProblems, font)
+  constructor(eventTitle, duration, frozen, blind, penalty, qtdProblems, font = "") {
+    super(eventTitle, duration, frozen, blind, penalty, qtdProblems, font)
     this.rowHeight = 80 + 2 * this.marginY;
   }
 

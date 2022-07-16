@@ -4,7 +4,7 @@ import canvasSingleton from './Canvas.js'
 import eventsManager from './EventsManager.js';
 
 class Scoreboard {
-  constructor(eventTitle, { duration, frozen, blind, penalty }, qtdProblems, font = "") {
+  constructor(eventTitle, duration, frozen, blind, penalty, qtdProblems, font = "") {
     this.camera = cameraSingleton.getInstance();
     this.rows = new Array(0);
     this.eventTitle = eventTitle;

@@ -7,6 +7,7 @@ import { COLORS } from './settings/colors.js';
 import eventsManager from './models/EventsManager.js';
 import ScoreboardFirsts from './models/ScoreboardFirsts.js';
 import ScoreboardExpanded from './models/ScoreboardExpanded.js';
+import { MODE } from './appSettings.js';
 
 const body = document.getElementsByTagName('body')
 body[0].style.margin = 0;
@@ -40,41 +41,38 @@ let currentView = VIEWS.DEFAULT;
 eventsManager.getInstance()
 
 const main = async () => {
-  const rawData = await getContest();
-  let runs = await getRuns()
-  const {
-    name: eventTitle,
-    duration, frozen, blind, penalty,
-    n_questions: qtdProblems,
-    teams
-  } = rawData
+  let contest = await getContest();
+
+  let runs = (await getRuns()).filter(r => r.time >= 0).filter(r => r.time < Math.trunc(contest.duration ));
+  debugger
+  // let runs = await getRuns();
 
   // Instatiate Scoreboard
   scoreboards = {
     default: new Scoreboard(
-      eventTitle, 
-      {duration, frozen, blind, penalty}, 
-      qtdProblems
+      contest.eventTitle, 
+      contest.duration, contest.frozen, contest.blind, contest.penalty, 
+      contest.qtdProblems
       // O que ja tem
     ), 
     firstHits: new ScoreboardFirsts(
-      eventTitle, 
-      {duration, frozen, blind, penalty}, 
-      qtdProblems,
+      contest.eventTitle, 
+      contest.duration, contest.frozen, contest.blind, contest.penalty, 
+      contest.qtdProblems,
       // 'Primeiro a acertar'
     ),
     expanded: new ScoreboardExpanded(
-      eventTitle, 
-      {duration, frozen, blind, penalty}, 
-      qtdProblems,
+      contest.eventTitle, 
+      contest.duration, contest.frozen, contest.blind, contest.penalty, 
+      contest.qtdProblems,
       // 'Primeiro a acertar'
     )
   };
-
+  
   // Instatiate teams on base scoreboards
-  teams.map((team, index) => {
-    Object.keys(scoreboards).forEach((key) => {
-      scoreboards[key].addRow(team)
+  contest.teams.forEach((team, _) => {
+    Object.values(scoreboards).forEach((value) => {
+      value.addRow(team)
     })
   });
 
@@ -84,7 +82,7 @@ const main = async () => {
   //     if(!scoreboards[team.region]){
   //       scoreboards[team.region] = new Scoreboard(
   //         eventTitle, 
-  //         {duration, frozen, blind, penalty}, 
+  //         contest.duration, contest.frozen, contest.blind, contest.penalty, 
   //         qtdProblems,
   //         // 'Scoreboard da região'
   //       )
@@ -107,15 +105,23 @@ const main = async () => {
   redrawAll();
   var refresh = setInterval(async () => {
     if(await getContestEnd()) clearInterval(refresh)
-    let newRuns = await getNewRuns(runs[runs.length - 1]["runId"])
+    let newRuns = !runs.length ? await getRuns() : (await getNewRuns(runs[runs.length - 1]["runId"]));
+    newRuns = newRuns.filter(r => r.time >= 0).filter(r => r.time < Math.trunc(contest.duration ));
     if(!newRuns.length) return
+    if (MODE === "CF") {
+      let newTeams = (await getContest()).teams.filter(nt => !contest.teams.find(t => t.teamId == nt.teamId))
+      newTeams.forEach((team, _) => {
+        scoreboard.addRow(team)
+      });
+      contest.teams = contest.teams.concat(newTeams);
+    }
     runs = newRuns
     runs.map((run,i) => {
       Object.keys(scoreboards).forEach((key) => {
         scoreboards[key].processRun(run)
       })
     })
-  }, 1000);
+  }, 30000);
 
   setInterval(async () => {
     redrawAll();
