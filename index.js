@@ -44,7 +44,6 @@ const main = async () => {
   let contest = await getContest();
 
   let runs = (await getRuns()).filter(r => r.time >= 0).filter(r => r.time < Math.trunc(contest.duration ));
-  debugger
   // let runs = await getRuns();
 
   // Instatiate Scoreboard
@@ -77,13 +76,14 @@ const main = async () => {
   });
 
   // Instatiate teams on region scoreboards
-  // teams.map((team, index) => {
+  // if (MODE != "CF") 
+  // contest.teams.map((team, index) => {
   //   if(team.hasOwnProperty('region')){
   //     if(!scoreboards[team.region]){
   //       scoreboards[team.region] = new Scoreboard(
-  //         eventTitle, 
+  //         contest.eventTitle, 
   //         contest.duration, contest.frozen, contest.blind, contest.penalty, 
-  //         qtdProblems,
+  //         contest.qtdProblems,
   //         // 'Scoreboard da região'
   //       )
   //       let viewKey = '';
@@ -111,7 +111,10 @@ const main = async () => {
     if (MODE === "CF") {
       let newTeams = (await getContest()).teams.filter(nt => !contest.teams.find(t => t.teamId == nt.teamId))
       newTeams.forEach((team, _) => {
-        scoreboard.addRow(team)
+        // scoreboard.addRow(team)
+        Object.values(scoreboards).forEach((value) => {
+          value.addRow(team)
+        })
       });
       contest.teams = contest.teams.concat(newTeams);
     }
@@ -121,7 +124,7 @@ const main = async () => {
         scoreboards[key].processRun(run)
       })
     })
-  }, 30000);
+  }, 2000);
 
   setInterval(async () => {
     redrawAll();
