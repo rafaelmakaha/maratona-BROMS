@@ -40,7 +40,7 @@ class Scoreboard {
     }
   }
   update() {
-    // this.rows.map((row) => row.update())
+    this.rows.map((row) => row.update())
   }
   draw() {
     // this.rowWidth = 0.95 * canvasSingleton.getInstance().getWidth();
@@ -87,9 +87,11 @@ class Scoreboard {
   updatePosition(index) {
     let i = index - 1;
     while (i != 0) {
-      if (this.rows[i + 1].score > this.rows[i].score ||
-        this.rows[i + 1].score === this.rows[i].score && this.rows[i + 1].accumulatedPenalty < this.rows[i].accumulatedPenalty ||
-        this.rows[i + 1].accumulatedPenalty === this.rows[i].accumulatedPenalty && this.rows[i + 1].lastAc < this.rows[i].lastAc) {
+      if (this.rows[i + 1].score > this.rows[i].score 
+        || this.rows[i + 1].score === this.rows[i].score 
+        && this.rows[i + 1].accumulatedPenalty < this.rows[i].accumulatedPenalty 
+        || this.rows[i + 1].accumulatedPenalty === this.rows[i].accumulatedPenalty 
+        && this.rows[i + 1].lastAc < this.rows[i].lastAc) {
 
         // update position
         //this.rows[i].position++;
@@ -103,8 +105,8 @@ class Scoreboard {
         this.rows[i + 1] = aux;
 
         // update row coords
-        const auxY = this.rows[i].y
-        this.rows[i].updateCoords(this.rows[i].x, this.rows[i + 1].y)
+        const auxY = this.rows[i].nextY
+        this.rows[i].updateCoords(this.rows[i].x, this.rows[i + 1].nextY)
         this.rows[i + 1].updateCoords(this.rows[i + 1].x, auxY)
       } else {
         break;

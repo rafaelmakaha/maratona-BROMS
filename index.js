@@ -127,10 +127,16 @@ const main = async () => {
   }, 2000);
 
   setInterval(async () => {
+    updateAll();
     redrawAll();
-  }, 50); // 20 fps
+  }, 33); // 1000/33 => 30fps
 }
 
+export const updateAll = () => {
+  Object.keys(scoreboards).forEach((key) => {
+    scoreboards[key].update()
+  })
+}
 
 export const redrawAll = () => {
   canvas = canvasSingleton.getInstance();
