@@ -32,7 +32,7 @@ export const getMockRuns = () => {
   })
 }
 
-export const getMockNewRuns = (runId) => {
+export const getMockNewRuns = (index) => {
   const url = `${MOCK_BASE_URL}/runs/diff`;
   const method = 'POST';
   return new Promise((resolve, reject) => {
@@ -41,7 +41,7 @@ export const getMockNewRuns = (runId) => {
       headers: {
         'Access-Control-Allow-Origin':'*'
       },
-      body: JSON.stringify(runId)
+      body: JSON.stringify(index)
     })
     .then(response => response.json())
     .then(resolve)

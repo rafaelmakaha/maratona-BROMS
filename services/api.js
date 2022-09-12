@@ -29,11 +29,13 @@ export const getRuns = () => {
   }
 }
 
-export const getNewRuns = (runId) => {
+// For api mock key it is the index of the next run to be requested 
+// and for api cf it is the id of the last run processed
+export const getNewRuns = (key) => {
   switch (MODE) {
     case "MOCK":
-      return getMockNewRuns(runId);
+      return getMockNewRuns(key);
     case "CF":
-      return getCFNewRuns(runId);
+      return getCFNewRuns(key);
   }
 }

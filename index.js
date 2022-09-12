@@ -105,7 +105,7 @@ const main = async () => {
   redrawAll();
   var refresh = setInterval(async () => {
     if(await getContestEnd()) clearInterval(refresh)
-    let newRuns = !runs.length ? await getRuns() : (await getNewRuns(runs[runs.length - 1]["runId"]));
+    let newRuns = !runs.length ? await getRuns() : MODE == "MOCK" ? await getNewRuns(runs.length) : (await getNewRuns(runs[runs.length - 1]["runId"]));
     newRuns = newRuns.filter(r => r.time >= 0).filter(r => r.time < Math.trunc(contest.duration ));
     if(!newRuns.length) return
     if (MODE === "CF") {
