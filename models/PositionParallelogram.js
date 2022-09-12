@@ -1,5 +1,6 @@
 import Parallelogram from './Parallelogram.js';
 import { COLORS } from '../settings/colors.js';
+import {GOLD_MEDALISTS, SILVER_MEDALISTS, BRONZE_MEDALISTS} from '../appSettings.js';
 
 class PositionParallelogram extends Parallelogram {
     constructor(Parent=undefined, x, y, wRel, h, text=undefined, fillColor='white', borderColor='black'){
@@ -10,11 +11,11 @@ class PositionParallelogram extends Parallelogram {
     setText(text, {selfAlign=this.text.selfAlign}={}) {
         let rank = Number(text);
         this.text.setText(text, selfAlign);
-        if(rank <= 3){
+        if(rank <= GOLD_MEDALISTS){
             this.fillColor = COLORS.goldPosition;
-        }else if(rank <= 6){
+        }else if(rank <= SILVER_MEDALISTS){
             this.fillColor = COLORS.silverPosition;
-        }else if(rank <= 10){
+        }else if(rank <= BRONZE_MEDALISTS){
             this.fillColor = COLORS.bronzePosition;
         }else{
             this.fillColor = COLORS.defaultPosition;

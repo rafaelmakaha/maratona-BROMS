@@ -4,6 +4,12 @@ const MODES = {
 }
 export const MODE = MODES[0];
 
+// medalists
+
+export const GOLD_MEDALISTS = 4;
+export const SILVER_MEDALISTS = 8;
+export const BRONZE_MEDALISTS = 12;
+
 // Mock API
 
 export const MOCK_BASE_URL  = 'http://localhost:8000'
