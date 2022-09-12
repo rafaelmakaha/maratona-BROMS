@@ -57,7 +57,7 @@ class Scoreboard {
   processRun({runId, time, teamUid, problem, verdict}) {
     let found=false;
     let i;
-    for(i = 0; i < this.totalRows; i++){
+    for(i = 1; i <= this.totalRows; i++) {
       if(this.rows[i].uid === teamUid) {
         found = true;
         break;
